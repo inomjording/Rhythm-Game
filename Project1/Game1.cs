@@ -2,10 +2,11 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Project1.Beats;
+using RythmGame.BeatButtons;
+using RythmGame.Beats;
 using System.Collections.Generic;
 
-namespace Project1
+namespace RythmGame
 {
     public class Game1 : Game
     {
@@ -19,10 +20,10 @@ namespace Project1
         public static Vector2 origin = new Vector2(200, 200);
 
         // Create beat buttons for each direction
-        BeatButton upButton;
-        BeatButton downButton;
-        BeatButton leftButton;
-        BeatButton rightButton;
+        BeatButtonUp upButton;
+        BeatButtonDown downButton;
+        BeatButtonLeft leftButton;
+        BeatButtonRight rightButton;
 
         
         BeatManager beatManager;
@@ -64,10 +65,10 @@ namespace Project1
             soundEffectInstance.IsLooped = true;
 
             // Create beat buttons for each direction
-            upButton = new BeatButton(arrowTexture, origin - new Vector2(0, 50), Keys.Up, 0f); // Up (no rotation)
-            downButton = new BeatButton(arrowTexture, origin + new Vector2(0, 50), Keys.Down, MathHelper.Pi); // Down (180 degrees)
-            leftButton = new BeatButton(arrowTexture, origin - new Vector2(50, 0), Keys.Left, -MathHelper.PiOver2); // Left (-90 degrees)
-            rightButton = new BeatButton(arrowTexture, origin + new Vector2(50, 0), Keys.Right, MathHelper.PiOver2); // Right (90 degrees)
+            upButton = new BeatButtonUp(arrowTexture);
+            downButton = new BeatButtonDown(arrowTexture);
+            leftButton = new BeatButtonLeft(arrowTexture);
+            rightButton = new BeatButtonRight(arrowTexture);
 
 
             // Play the sound effect instance
@@ -82,17 +83,16 @@ namespace Project1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            var kstate = Keyboard.GetState();
+            KeyboardState keyboardState = Keyboard.GetState();
 
             arrowPosition.Y += 2;
 
             beatManager.Update(gameTime, activeBeats);
 
-            upButton.Update(gameTime, kstate);
-            downButton.Update(gameTime, kstate);
-            leftButton.Update(gameTime, kstate);
-            rightButton.Update(gameTime, kstate);
+            upButton.Update(gameTime, keyboardState, activeBeats);
+            downButton.Update(gameTime, keyboardState, activeBeats);
+            leftButton.Update(gameTime, keyboardState, activeBeats);
+            rightButton.Update(gameTime, keyboardState, activeBeats);
 
             base.Update(gameTime);
         }

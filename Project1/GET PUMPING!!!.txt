@@ -216,8 +216,42 @@ U
 
 
 
-D
+R
+
+U
 
 L
 
+
 U
+
+LR
+
+U
+
+
+
+D
+
+LR
+
+D
+
+
+
+LD
+
+U
+
+RD
+
+
+
+UR
+
+D
+
+UL
+
+U
+

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Project1.Beats
+namespace RythmGame.Beats
 {
     public class BeatDown : Beat
     {

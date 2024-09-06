@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Project1;
-using Project1.Beats;
+using Microsoft.Xna.Framework.Input;
+using RythmGame;
+using RythmGame.Beats;
 
 public class BeatManager
 {
-    private List<(List<Beat>, float)> beatQueue; // List of beats and their spawn times
+    // Separate queues for each direction
+    private Queue<(Beat, float)> upQueue = new Queue<(Beat, float)>();
+    private Queue<(Beat, float)> downQueue = new Queue<(Beat, float)>();
+    private Queue<(Beat, float)> leftQueue = new Queue<(Beat, float)>();
+    private Queue<(Beat, float)> rightQueue = new Queue<(Beat, float)>();
+
     private float beatInterval; // Time between beats (in seconds)
     private Vector2 center;
     private Texture2D beatTexture;
@@ -19,7 +25,6 @@ public class BeatManager
         this.beatInterval = beatInterval;
         this.center = Game1.origin;
         this.beatTexture = beatTexture;
-        this.beatQueue = new List<(List<Beat>, float)>();
         this.speed = speed;
     }
 
@@ -39,23 +44,31 @@ public class BeatManager
                 switch (direction)
                 {
                     case 'U':
-                        beats.Add(new BeatUp(beatTexture, speed));
+                        upQueue.Enqueue((new BeatUp(beatTexture, speed), currentTime));
                         break;
                     case 'D':
-                        beats.Add(new BeatDown(beatTexture, speed));
+                        downQueue.Enqueue((new BeatDown(beatTexture, speed), currentTime));
                         break;
                     case 'L':
-                        beats.Add(new BeatLeft(beatTexture, speed));
+                        leftQueue.Enqueue((new BeatLeft(beatTexture, speed), currentTime));
                         break;
                     case 'R':
-                        beats.Add(new BeatRight(beatTexture, speed));
+                        rightQueue.Enqueue((new BeatRight(beatTexture, speed), currentTime));
                         break;
                 }
             }
 
-            // Add the beats and their corresponding spawn time to the queue
-            beatQueue.Add((beats, currentTime));
             currentTime += beatInterval; // Move to the next beat time
+        }
+    }
+
+    // Helper method to spawn beats from a queue based on the elapsed time
+    private void SpawnBeatsFromQueue(Queue<(Beat, float)> beatQueue, float elapsedTime, List<Beat> activeBeats)
+    {
+        while (beatQueue.Count > 0 && elapsedTime >= beatQueue.Peek().Item2)
+        {
+            var (beat, spawnTime) = beatQueue.Dequeue();
+            activeBeats.Add(beat);
         }
     }
 
@@ -64,18 +77,11 @@ public class BeatManager
     {
         float elapsedTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
-        // Spawn beats at the correct time
-        for (int i = beatQueue.Count - 1; i >= 0; i--)
-        {
-            if (elapsedTime >= beatQueue[i].Item2 - 0.02f)
-            {
-                // Add the beats to the active beats list
-                activeBeats.AddRange(beatQueue[i].Item1);
-
-                // Remove from the queue after spawning
-                beatQueue.RemoveAt(i);
-            }
-        }
+        // Spawn beats for each direction queue
+        SpawnBeatsFromQueue(upQueue, elapsedTime, activeBeats);
+        SpawnBeatsFromQueue(downQueue, elapsedTime, activeBeats);
+        SpawnBeatsFromQueue(leftQueue, elapsedTime, activeBeats);
+        SpawnBeatsFromQueue(rightQueue, elapsedTime, activeBeats);
 
         // Update all active beats
         foreach (var beat in activeBeats)

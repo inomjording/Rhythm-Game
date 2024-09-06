@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Project1.Beats
+namespace RythmGame.Beats
 {
 
     public class Beat
@@ -62,6 +62,12 @@ namespace Project1.Beats
         public bool HasReachedCenter()
         {
             return position == origin;
+        }
+
+        // Method to get the bounding box of the beat
+        public Rectangle GetBoundingBox()
+        {
+            return new Rectangle((int)(position.X - origin.X * scale), (int)(position.Y - origin.Y * scale), (int)(texture.Width * scale), (int)(texture.Height * scale));
         }
     }
 

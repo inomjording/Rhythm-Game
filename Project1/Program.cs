@@ -1,3 +1,3 @@
 ﻿
-using var game = new Project1.Game1();
+using var game = new RythmGame.Game1();
 game.Run();

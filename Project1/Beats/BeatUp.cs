@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using static System.Formats.Asn1.AsnWriter;
 
-namespace Project1.Beats
+namespace RythmGame.Beats
 {
     public class BeatUp : Beat
     {
