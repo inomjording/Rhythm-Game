@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RythmGame", "Project1\RythmGame.csproj", "{E714998C-06DC-4389-B5C4-0E64132DA497}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RythmGame", "Game\RythmGame.csproj", "{CACCAA3B-1E37-4EEA-AA40-6EA5551BF7C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E714998C-06DC-4389-B5C4-0E64132DA497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E714998C-06DC-4389-B5C4-0E64132DA497}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E714998C-06DC-4389-B5C4-0E64132DA497}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E714998C-06DC-4389-B5C4-0E64132DA497}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CACCAA3B-1E37-4EEA-AA40-6EA5551BF7C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACCAA3B-1E37-4EEA-AA40-6EA5551BF7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACCAA3B-1E37-4EEA-AA40-6EA5551BF7C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACCAA3B-1E37-4EEA-AA40-6EA5551BF7C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
