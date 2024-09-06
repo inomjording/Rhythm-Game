@@ -23,7 +23,7 @@ public class BeatManager
     public BeatManager(float beatInterval, Vector2 center, Texture2D beatTexture, float speed)
     {
         this.beatInterval = beatInterval;
-        this.center = Game1.origin;
+        this.center = BeatGame.origin;
         this.beatTexture = beatTexture;
         this.speed = speed;
     }

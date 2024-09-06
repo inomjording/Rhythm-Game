@@ -2,32 +2,27 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RythmGame.Beats;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RythmGame.BeatButtons
+namespace RythmGame.BeatButtons;
+
+internal class BeatButtonUp : BeatButton
 {
-    internal class BeatButtonUp : BeatButton
+    public BeatButtonUp(Texture2D texture) : base(texture)
     {
-        public BeatButtonUp(Texture2D texture) : base(texture)
-        {
-            position = Game1.origin - new Vector2(0, 50);
-            rotation = 0f;
-            associatedKey = Keys.Up;
-        }
+        position = BeatGame.origin - new Vector2(0, 50);
+        rotation = 0f;
+        associatedKey = Keys.Up;
+    }
 
-        public new void CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
+    public new void CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
+    {
+        foreach (Beat beat in activeBeats)
         {
-            foreach (Beat beat in activeBeats)
+            if (beat is BeatUp && targetArea.Intersects(beat.GetBoundingBox()))
             {
-                if (beat is BeatUp && targetArea.Intersects(beat.GetBoundingBox()))
-                {
-                    activeBeats.Remove(beat);
-                    break;
-                }
+                activeBeats.Remove(beat);
+                break;
             }
         }
     }
