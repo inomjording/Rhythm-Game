@@ -1,9 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RythmGame.Beats;
-using System.Collections.Generic;
-using System;
+using RhythmGame.Beats;
+
+namespace RhythmGame.BeatButtons;
 
 public class BeatButton
 {
@@ -22,10 +23,10 @@ public class BeatButton
 
     // Constructor
     public BeatButton(Texture2D texture,
-                      Vector2 position,
-                      Keys associatedKey,
-                      float rotation = 0f, 
-                      float scale = 1f)
+        Vector2 position,
+        Keys associatedKey,
+        float rotation = 0f, 
+        float scale = 1f)
     {
         this.texture = texture;
         this.position = position;
@@ -85,19 +86,7 @@ public class BeatButton
         set { rotation = value; }
     }
 
-    public void CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
+    public virtual void CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
     {
-        foreach (var beat in activeBeats)
-        {
-            if (targetArea.Intersects(beat.GetBoundingBox()))
-            {
-                // Handle collision (e.g., register a hit, remove beat, etc.)
-                // Console.WriteLine("Hit detected!");
-
-                // For example, remove the beat from the active list
-                activeBeats.Remove(beat);
-                break; // Break after the first collision detection
-            }
-        }
     }
 }

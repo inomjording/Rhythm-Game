@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RythmGame.Beats;
+namespace RhythmGame.Beats;
 
 public class BeatRight : Beat
 {

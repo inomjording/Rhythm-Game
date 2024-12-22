@@ -1,4 +1,4 @@
-﻿namespace RythmGame.CharacterSprite;
+﻿namespace RhythmGame.CharacterSprite;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

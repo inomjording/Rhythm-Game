@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace RythmGame.CharacterSprite;
+namespace RhythmGame.CharacterSprite;
 
 public class DancingCharacter
 {
@@ -37,36 +37,52 @@ public class DancingCharacter
     
     public void Update(GameTime gameTime, KeyboardState keyboardState)
     {
+        animatedCharacter.frameInterval = 0.05f;
         // Change the animation based on the key pressed
         if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
         {
             animatedCharacter.SetAnimation("DanceSplit");
-            animatedCharacter.frameInterval = 0.05f;
+        }
+        else if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Up))
+        {
+            animatedCharacter.SetAnimation("DanceLeftUp");
+        }
+        else if (keyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyDown(Keys.Up))
+        {
+            animatedCharacter.SetAnimation("DanceRightUp");
+        }
+        else if (keyboardState.IsKeyDown(Keys.Right) && keyboardState.IsKeyDown(Keys.Down))
+        {
+            animatedCharacter.SetAnimation("DanceRightDown");
+        }
+        else if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Down))
+        {
+            animatedCharacter.SetAnimation("DanceLeftDown");
+        }
+        else if (keyboardState.IsKeyDown(Keys.Up) && keyboardState.IsKeyDown(Keys.Down))
+        {
+            animatedCharacter.SetAnimation("DanceUpDown");
         }
         else if (keyboardState.IsKeyDown(Keys.Up))
         {
             animatedCharacter.SetAnimation("DanceUp");
-            animatedCharacter.frameInterval = 0.5f;
         }
         else if (keyboardState.IsKeyDown(Keys.Down))
         {
             animatedCharacter.SetAnimation("DanceDown");
-            animatedCharacter.frameInterval = 0.5f;
         }
         else if (keyboardState.IsKeyDown(Keys.Left))
         {
             animatedCharacter.SetAnimation("DanceLeft");
-            animatedCharacter.frameInterval = 0.05f;
         }
         else if (keyboardState.IsKeyDown(Keys.Right))
         {
             animatedCharacter.SetAnimation("DanceRight");
-            animatedCharacter.frameInterval = 0.05f;
         }
         else
         {
             animatedCharacter.SetAnimation("Idle");
-            animatedCharacter.frameInterval = 0.5f;
+            animatedCharacter.frameInterval = 0.2f;
         }
 
         animatedCharacter.Update(gameTime);

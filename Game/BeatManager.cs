@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using RythmGame;
-using RythmGame.Beats;
+using RhythmGame;
+using RhythmGame.Beats;
 
 public class BeatManager
 {

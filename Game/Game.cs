@@ -2,12 +2,12 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RythmGame.BeatButtons;
-using RythmGame.Beats;
 using System.Collections.Generic;
-using RythmGame.CharacterSprite;
+using RhythmGame.BeatButtons;
+using RhythmGame.Beats;
+using RhythmGame.CharacterSprite;
 
-namespace RythmGame;
+namespace RhythmGame;
 
 public class BeatGame : Microsoft.Xna.Framework.Game
 {
@@ -19,7 +19,7 @@ public class BeatGame : Microsoft.Xna.Framework.Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    public static Vector2 origin = new Vector2(200, 200);
+    public static Vector2 origin = new Vector2(200, 240);
 
     // Create beat buttons for each direction
     BeatButtonUp upButton;
@@ -77,11 +77,16 @@ public class BeatGame : Microsoft.Xna.Framework.Game
         var animationTextures = new Dictionary<string, Texture2D>
         {
             { "Idle", Content.Load<Texture2D>("Idle") },
-            { "DanceUp", Content.Load<Texture2D>("Idle") },
-            { "DanceDown", Content.Load<Texture2D>("Idle") },
+            { "DanceUp", Content.Load<Texture2D>("DanceUp") },
+            { "DanceDown", Content.Load<Texture2D>("DanceDown") },
             { "DanceLeft", Content.Load<Texture2D>("DanceLeft") },
             { "DanceRight", Content.Load<Texture2D>("DanceRight") },
-            { "DanceSplit", Content.Load<Texture2D>("DanceSplit") }
+            { "DanceSplit", Content.Load<Texture2D>("DanceSplit") },
+            { "DanceLeftUp", Content.Load<Texture2D>("DanceLeftUp") },
+            { "DanceLeftDown", Content.Load<Texture2D>("DanceLeftDown") },
+            { "DanceRightUp", Content.Load<Texture2D>("DanceRightUp") },
+            { "DanceRightDown", Content.Load<Texture2D>("DanceRightDown") },
+            { "DanceUpDown", Content.Load<Texture2D>("DanceUpDown") }
         };
         dancingCharacter = new DancingCharacter(animationTextures, new Vector2(500, origin.Y));
 
@@ -97,7 +102,7 @@ public class BeatGame : Microsoft.Xna.Framework.Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        KeyboardState keyboardState = Keyboard.GetState();
+        var keyboardState = Keyboard.GetState();
 
         arrowPosition.Y += 2;
 

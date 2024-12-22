@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RythmGame.CharacterSprite;
+namespace RhythmGame.CharacterSprite;
 
 public class AnimatedCharacter
 {
@@ -56,7 +56,14 @@ public class AnimatedCharacter
 
             if (currentFrame >= animations[currentAnimation].Count)
             {
-                currentFrame = 0; // Loop the animation
+                if (currentAnimation == "Idle")
+                {
+                    currentFrame = 0; // Loop the animation
+                }
+                else
+                {
+                    currentFrame--;
+                }
             }
         }
     }

@@ -1,3 +1,3 @@
 ﻿
-using var game = new RythmGame.BeatGame();
+using var game = new RhythmGame.BeatGame();
 game.Run();
