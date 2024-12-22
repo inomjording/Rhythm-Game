@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using RythmGame.BeatButtons;
 using RythmGame.Beats;
 using System.Collections.Generic;
+using RythmGame.CharacterSprite;
 
 namespace RythmGame;
 
@@ -13,6 +14,7 @@ public class BeatGame : Microsoft.Xna.Framework.Game
     Texture2D arrowTexture;
     Texture2D arrow;
     Vector2 arrowPosition;
+    private Texture2D background;
         
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
@@ -27,12 +29,14 @@ public class BeatGame : Microsoft.Xna.Framework.Game
 
         
     BeatManager beatManager;
-    List<Beat> activeBeats = new List<Beat>();
+    List<Beat> activeBeats = new();
 
     // Audio objects
     SoundEffect soundEffect;
     private SoundEffectInstance soundEffectInstance;
 
+    // Character
+    private DancingCharacter dancingCharacter;
 
     public BeatGame()
     {
@@ -43,7 +47,6 @@ public class BeatGame : Microsoft.Xna.Framework.Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
         arrowPosition = new Vector2(75, 0);
 
         base.Initialize();
@@ -55,10 +58,10 @@ public class BeatGame : Microsoft.Xna.Framework.Game
 
         // Create a new SpriteBatch, which can be used to draw textures.
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        // TODO: use this.Content to load your game content here
+        
         arrowTexture = Content.Load<Texture2D>("active-arrow");
         arrow = Content.Load<Texture2D>("full-arrow");
+        background = Content.Load<Texture2D>("bg");
 
         soundEffect = Content.Load<SoundEffect>("GET PUMPING!!!");
         soundEffectInstance = soundEffect.CreateInstance();
@@ -69,7 +72,18 @@ public class BeatGame : Microsoft.Xna.Framework.Game
         downButton = new BeatButtonDown(arrowTexture);
         leftButton = new BeatButtonLeft(arrowTexture);
         rightButton = new BeatButtonRight(arrowTexture);
-
+        
+        // Load character
+        var animationTextures = new Dictionary<string, Texture2D>
+        {
+            { "Idle", Content.Load<Texture2D>("Idle") },
+            { "DanceUp", Content.Load<Texture2D>("Idle") },
+            { "DanceDown", Content.Load<Texture2D>("Idle") },
+            { "DanceLeft", Content.Load<Texture2D>("DanceLeft") },
+            { "DanceRight", Content.Load<Texture2D>("DanceRight") },
+            { "DanceSplit", Content.Load<Texture2D>("DanceSplit") }
+        };
+        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(500, origin.Y));
 
         // Play the sound effect instance
         soundEffectInstance.Play();
@@ -93,6 +107,8 @@ public class BeatGame : Microsoft.Xna.Framework.Game
         downButton.Update(gameTime, keyboardState, activeBeats);
         leftButton.Update(gameTime, keyboardState, activeBeats);
         rightButton.Update(gameTime, keyboardState, activeBeats);
+        
+        dancingCharacter.Update(gameTime, keyboardState);
 
         base.Update(gameTime);
     }
@@ -105,14 +121,18 @@ public class BeatGame : Microsoft.Xna.Framework.Game
 
 
         _spriteBatch.Begin();
+        _spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.White);
 
         beatManager.Draw(_spriteBatch, activeBeats);
-
+        
         // Draw all the beat buttons
         upButton.Draw(_spriteBatch);
         downButton.Draw(_spriteBatch);
         leftButton.Draw(_spriteBatch);
         rightButton.Draw(_spriteBatch);
+        
+        dancingCharacter.Draw(_spriteBatch);
+        
         _spriteBatch.End();
 
         base.Draw(gameTime);

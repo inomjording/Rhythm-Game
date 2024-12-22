@@ -36,7 +36,11 @@ public class BeatManager
         float currentTime = 0f; // Start at 0 seconds
         foreach (var line in lines)
         {
-            var beats = new List<Beat>();
+            var beatColor = Color.Cyan;
+            if (line.Length > 1)
+            {
+                beatColor = Color.Magenta;
+            }
              
             // Check each character in the line
             foreach (char direction in line)
@@ -44,16 +48,16 @@ public class BeatManager
                 switch (direction)
                 {
                     case 'U':
-                        upQueue.Enqueue((new BeatUp(beatTexture, speed), currentTime));
+                        upQueue.Enqueue((new BeatUp(beatTexture, speed, color: beatColor), currentTime));
                         break;
                     case 'D':
-                        downQueue.Enqueue((new BeatDown(beatTexture, speed), currentTime));
+                        downQueue.Enqueue((new BeatDown(beatTexture, speed, color: beatColor), currentTime));
                         break;
                     case 'L':
-                        leftQueue.Enqueue((new BeatLeft(beatTexture, speed), currentTime));
+                        leftQueue.Enqueue((new BeatLeft(beatTexture, speed, color: beatColor), currentTime));
                         break;
                     case 'R':
-                        rightQueue.Enqueue((new BeatRight(beatTexture, speed), currentTime));
+                        rightQueue.Enqueue((new BeatRight(beatTexture, speed, color: beatColor), currentTime));
                         break;
                 }
             }

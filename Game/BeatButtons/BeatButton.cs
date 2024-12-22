@@ -92,7 +92,7 @@ public class BeatButton
             if (targetArea.Intersects(beat.GetBoundingBox()))
             {
                 // Handle collision (e.g., register a hit, remove beat, etc.)
-                Console.WriteLine("Hit detected!");
+                // Console.WriteLine("Hit detected!");
 
                 // For example, remove the beat from the active list
                 activeBeats.Remove(beat);

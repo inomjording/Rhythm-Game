@@ -13,13 +13,15 @@ public class Beat
     private Vector2 origin = BeatGame.origin;
     public float scale;
     public float rotation = 0f;
+    public Color color = Color.White;
 
     // Constructor
-    public Beat(Texture2D texture, float speed = 200f, float scale = 1f)
+    public Beat(Texture2D texture, float speed = 200f, float scale = 1f, Color color = default)
     {
         this.texture = texture;
         this.speed = speed;
         this.scale = scale;
+        this.color = color;
     }
     public Beat(Texture2D texture, Vector2 startPosition, float rotation = 0f, float speed = 200f, float scale = 1f)
     {
@@ -54,7 +56,7 @@ public class Beat
     // Draw Method
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(texture, position, null, Color.White, rotation, new Vector2(texture.Width / 2f, texture.Height / 2f), scale, SpriteEffects.None, 0f);
+        spriteBatch.Draw(texture, position, null, color, rotation, new Vector2(texture.Width / 2f, texture.Height / 2f), scale, SpriteEffects.None, 0f);
     }
 
     // Optional: A property or method to check if the beat has reached the center
