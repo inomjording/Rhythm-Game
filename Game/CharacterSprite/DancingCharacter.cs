@@ -7,11 +7,10 @@ namespace RhythmGame.CharacterSprite;
 
 public class DancingCharacter
 {
-    private AnimatedCharacter animatedCharacter;
-    private Dictionary<string, Texture2D> animationTextures;
+    private readonly AnimatedCharacter animatedCharacter;
+
     public DancingCharacter(Dictionary<string, Texture2D> animationTextures, Vector2 startPosition, float scale = 1f)
     {
-        this.animationTextures = animationTextures;
         animatedCharacter = new AnimatedCharacter(animationTextures, 0.5f, startPosition, scale);
 
         // Add animations for each spritesheet
@@ -20,14 +19,14 @@ public class DancingCharacter
             animatedCharacter.AddAnimation(animation.Key, GenerateFrames(animation.Value));
         }
     }
-    
-    private List<Rectangle> GenerateFrames(Texture2D texture)
-    {
-        int frameWidth = 74;
-        int frameHeight = 76;
 
-        List<Rectangle> frames = new List<Rectangle>();
-        for (int i = 0; i < texture.Width / frameWidth; i++)
+    private static List<Rectangle> GenerateFrames(Texture2D texture)
+    {
+        const int frameWidth = 74;
+        const int frameHeight = 76;
+
+        var frames = new List<Rectangle>();
+        for (var i = 0; i < texture.Width / frameWidth; i++)
         {
             frames.Add(new Rectangle(i * frameWidth, 0, frameWidth, frameHeight));
         }
@@ -37,7 +36,7 @@ public class DancingCharacter
     
     public void Update(GameTime gameTime, KeyboardState keyboardState)
     {
-        animatedCharacter.frameInterval = 0.05f;
+        animatedCharacter.FrameInterval = 0.05f;
         // Change the animation based on the key pressed
         if (keyboardState.IsKeyDown(Keys.Left) && keyboardState.IsKeyDown(Keys.Right))
         {
@@ -82,7 +81,7 @@ public class DancingCharacter
         else
         {
             animatedCharacter.SetAnimation("Idle");
-            animatedCharacter.frameInterval = 0.2f;
+            animatedCharacter.FrameInterval = 0.2f;
         }
 
         animatedCharacter.Update(gameTime);

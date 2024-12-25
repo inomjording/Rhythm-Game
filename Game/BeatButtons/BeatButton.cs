@@ -9,39 +9,19 @@ namespace RhythmGame.BeatButtons;
 public class BeatButton
 {
     // Fields
-    public Texture2D texture;
-    public Vector2 position;
-    public float rotation;
-    public Vector2 center;
-    public float scale;
-    private SpriteEffects spriteEffects;
-    private Color defaultColor;
-    private Color activeColor;
+    private readonly Texture2D texture;
+    protected Vector2 Position;
+    protected float Rotation;
+    protected Vector2 Center;
+    private readonly float scale;
+    private readonly SpriteEffects spriteEffects;
+    private readonly Color defaultColor;
+    private readonly Color activeColor;
     private Color currentColor;
-    public Keys associatedKey;
-    public Rectangle targetArea;
+    protected Keys AssociatedKey;
+    protected Rectangle TargetArea;
 
-    // Constructor
-    public BeatButton(Texture2D texture,
-        Vector2 position,
-        Keys associatedKey,
-        float rotation = 0f, 
-        float scale = 1f)
-    {
-        this.texture = texture;
-        this.position = position;
-        this.rotation = rotation;
-        this.scale = scale;
-        spriteEffects = SpriteEffects.None;
-        defaultColor = Color.White; // Default color
-        activeColor = Color.Red;    // Active color when key is pressed
-        currentColor = defaultColor;
-        center = new Vector2(texture.Width / 2f, texture.Height / 2f); // center origin by default
-        targetArea = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
-        this.associatedKey = associatedKey;
-    }
-
-    public BeatButton(Texture2D texture) 
+    protected BeatButton(Texture2D texture) 
     {
         scale = 1f;
         this.texture = texture;
@@ -49,17 +29,17 @@ public class BeatButton
         defaultColor = Color.White; // Default color
         activeColor = Color.Red;    // Active color when key is pressed
         currentColor = defaultColor;
-        center = new Vector2(position.X + texture.Width / 2f, position.Y + texture.Height / 2f); // center origin by default
-        targetArea = new Rectangle((int)(center.X - texture.Width * scale / 2), (int)(center.Y - texture.Height * scale / 2), (int)(texture.Width * scale), (int)(texture.Height * scale));
+        Center = new Vector2(Position.X + texture.Width / 2f, Position.Y + texture.Height / 2f);
+        TargetArea = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
     }
 
     // Update Method
     public List<Beat> Update(GameTime gameTime, KeyboardState keyboardState, List<Beat> activeBeats)
     {
-        if (keyboardState.IsKeyDown(associatedKey))
+        if (keyboardState.IsKeyDown(AssociatedKey))
         {
             currentColor = activeColor; // Change to active color
-            List<Beat> beats = CheckForCollisions(activeBeats, keyboardState);
+            var beats = CheckForCollisions(activeBeats, keyboardState);
             return beats;
         }
         currentColor = defaultColor; // Revert to default color
@@ -69,24 +49,11 @@ public class BeatButton
     // Draw Method
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(texture, position, null, currentColor, rotation, center, scale, spriteEffects, 0f);
+        spriteBatch.Draw(texture, Position, null, currentColor, Rotation, Center, scale, spriteEffects, 0f);
     }
 
-    // Properties for Customization
-    public Vector2 Position
+    protected virtual List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
     {
-        get { return position; }
-        set { position = value; }
-    }
-
-    public float Rotation
-    {
-        get { return rotation; }
-        set { rotation = value; }
-    }
-
-    public virtual List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
-    {
-        return new List<Beat>();
+        return [];
     }
 }

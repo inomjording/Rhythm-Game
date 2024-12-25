@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RhythmGame;
 using RhythmGame.Beats;
+
+namespace RhythmGame;
 
 public class BeatManager
 {
     // Separate queues for each direction
-    private Queue<(Beat, float)> upQueue = new Queue<(Beat, float)>();
-    private Queue<(Beat, float)> downQueue = new Queue<(Beat, float)>();
-    private Queue<(Beat, float)> leftQueue = new Queue<(Beat, float)>();
-    private Queue<(Beat, float)> rightQueue = new Queue<(Beat, float)>();
+    private readonly Queue<(Beat, float)> upQueue = new();
+    private readonly Queue<(Beat, float)> downQueue = new();
+    private readonly Queue<(Beat, float)> leftQueue = new();
+    private readonly Queue<(Beat, float)> rightQueue = new();
 
-    private float beatInterval; // Time between beats (in seconds)
+    private readonly float beatInterval; // Time between beats (in seconds)
     private Vector2 center;
-    private Texture2D beatTexture;
-    private float speed;
+    private readonly Texture2D beatTexture;
+    private readonly float speed;
 
     public BeatManager(float beatInterval, Vector2 center, Texture2D beatTexture, float speed)
     {
         this.beatInterval = beatInterval;
-        this.center = BeatGame.origin;
+        this.center = BeatGame.Origin;
         this.beatTexture = beatTexture;
         this.speed = speed;
     }
@@ -30,9 +30,9 @@ public class BeatManager
     // Method to load beats from a text file
     public void LoadBeatsFromFile(string filePath)
     {
-        string[] lines = File.ReadAllLines(filePath);
+        var lines = File.ReadAllLines(filePath);
 
-        float currentTime = 0f - 150f/speed; // compensate for time it takes to travel
+        var currentTime = 0f - 150f/speed; // compensate for time it takes to travel
         foreach (var line in lines)
         {
             var beatColor = Color.Cyan;
@@ -66,7 +66,7 @@ public class BeatManager
     }
 
     // Helper method to spawn beats from a queue based on the elapsed time
-    private void SpawnBeatsFromQueue(Queue<(Beat, float)> beatQueue, float elapsedTime, List<Beat> activeBeats)
+    private static void SpawnBeatsFromQueue(Queue<(Beat, float)> beatQueue, float elapsedTime, List<Beat> activeBeats)
     {
         while (beatQueue.Count > 0 && elapsedTime >= beatQueue.Peek().Item2)
         {
@@ -78,7 +78,7 @@ public class BeatManager
     // Method to update and spawn beats based on time
     public void Update(GameTime gameTime, List<Beat> activeBeats)
     {
-        float elapsedTime = (float)gameTime.TotalGameTime.TotalSeconds;
+        var elapsedTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
         // Spawn beats for each direction queue
         SpawnBeatsFromQueue(upQueue, elapsedTime, activeBeats);
@@ -97,7 +97,7 @@ public class BeatManager
     }
 
     // Method to draw active beats
-    public void Draw(SpriteBatch spriteBatch, List<Beat> activeBeats)
+    public static void Draw(SpriteBatch spriteBatch, List<Beat> activeBeats)
     {
         foreach (var beat in activeBeats)
         {

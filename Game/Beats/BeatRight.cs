@@ -5,10 +5,16 @@ namespace RhythmGame.Beats;
 
 public class BeatRight : Beat
 {
-    public BeatRight(Texture2D texture, float speed = 200, float scale = 1, Color color = default) : base(texture, speed, scale, color)
+    public BeatRight(Texture2D texture,
+        float speed = 200,
+        float scale = 1,
+        Color color = default) : base(texture,
+        speed,
+        scale,
+        color)
     {
-        position = new Vector2(BeatGame.origin.X + 200, BeatGame.origin.Y);
-        direction = Vector2.Normalize(BeatGame.origin - position);
-        rotation = MathHelper.PiOver2;
+        Position = new Vector2(BeatGame.Origin.X + 200, BeatGame.Origin.Y);
+        Direction = Vector2.Normalize(BeatGame.Origin - Position);
+        Rotation = MathHelper.PiOver2;
     }
 }

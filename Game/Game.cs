@@ -9,30 +9,30 @@ using RhythmGame.CharacterSprite;
 
 namespace RhythmGame;
 
-public class BeatGame : Microsoft.Xna.Framework.Game
+public class BeatGame : Game
 {
-    Texture2D arrowTexture;
-    Texture2D arrow;
-    Vector2 arrowPosition;
+    private Texture2D arrowTexture;
+    private Texture2D arrow;
+    private Vector2 arrowPosition;
     private Texture2D background;
         
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    private readonly GraphicsDeviceManager graphics;
+    private SpriteBatch spriteBatch;
 
-    public static Vector2 origin = new Vector2(200, 240);
+    public static readonly Vector2 Origin = new(200, 240);
 
     // Create beat buttons for each direction
-    BeatButtonUp upButton;
-    BeatButtonDown downButton;
-    BeatButtonLeft leftButton;
-    BeatButtonRight rightButton;
+    private BeatButtonUp upButton;
+    private BeatButtonDown downButton;
+    private BeatButtonLeft leftButton;
+    private BeatButtonRight rightButton;
 
-        
-    BeatManager beatManager;
-    List<Beat> activeBeats = new();
+
+    private BeatManager beatManager;
+    private List<Beat> activeBeats = [];
 
     // Audio objects
-    SoundEffect soundEffect;
+    private SoundEffect soundEffect;
     private SoundEffectInstance soundEffectInstance;
 
     // Character
@@ -40,7 +40,7 @@ public class BeatGame : Microsoft.Xna.Framework.Game
 
     public BeatGame()
     {
-        _graphics = new GraphicsDeviceManager(this);
+        graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -54,14 +54,14 @@ public class BeatGame : Microsoft.Xna.Framework.Game
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // Create a new SpriteBatch, which can be used to draw textures.
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        spriteBatch = new SpriteBatch(GraphicsDevice);
         
         arrowTexture = Content.Load<Texture2D>("active-arrow");
         arrow = Content.Load<Texture2D>("full-arrow");
-        background = Content.Load<Texture2D>("bg");
+        background = Content.Load<Texture2D>("bg2");
 
         soundEffect = Content.Load<SoundEffect>("GET PUMPING!!!");
         soundEffectInstance = soundEffect.CreateInstance();
@@ -88,12 +88,12 @@ public class BeatGame : Microsoft.Xna.Framework.Game
             { "DanceRightDown", Content.Load<Texture2D>("DanceRightDown") },
             { "DanceUpDown", Content.Load<Texture2D>("DanceUpDown") }
         };
-        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(500, origin.Y));
+        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(460, Origin.Y));
 
         // Play the sound effect instance
         soundEffectInstance.Play();
 
-        beatManager = new BeatManager(0.5f*0.38709677419f, origin, arrow, 300f);
+        beatManager = new BeatManager(0.5f*0.38709677419f, Origin, arrow, 300f);
         beatManager.LoadBeatsFromFile("../../../GET PUMPING!!!.txt");
     }
 
@@ -121,24 +121,22 @@ public class BeatGame : Microsoft.Xna.Framework.Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
+        graphics.GraphicsDevice.Clear(Color.Black);
 
-        _graphics.GraphicsDevice.Clear(Color.Black);
+        spriteBatch.Begin();
+        spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.White);
 
-
-        _spriteBatch.Begin();
-        _spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.White);
-
-        beatManager.Draw(_spriteBatch, activeBeats);
+        BeatManager.Draw(spriteBatch, activeBeats);
         
         // Draw all the beat buttons
-        upButton.Draw(_spriteBatch);
-        downButton.Draw(_spriteBatch);
-        leftButton.Draw(_spriteBatch);
-        rightButton.Draw(_spriteBatch);
+        upButton.Draw(spriteBatch);
+        downButton.Draw(spriteBatch);
+        leftButton.Draw(spriteBatch);
+        rightButton.Draw(spriteBatch);
         
-        dancingCharacter.Draw(_spriteBatch);
+        dancingCharacter.Draw(spriteBatch);
         
-        _spriteBatch.End();
+        spriteBatch.End();
 
         base.Draw(gameTime);
     }
