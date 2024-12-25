@@ -16,7 +16,7 @@ public class Beat
     public Color color = Color.White;
 
     // Constructor
-    public Beat(Texture2D texture, float speed = 200f, float scale = 1f, Color color = default)
+    public Beat(Texture2D texture, float speed = 250f, float scale = 1f, Color color = default)
     {
         this.texture = texture;
         this.speed = speed;

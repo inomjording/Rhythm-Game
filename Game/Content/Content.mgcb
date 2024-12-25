@@ -137,7 +137,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DanceLeftBack.png
+/build:DanceLeftBack.png;DanceLeftUp.png
 
 #begin DanceLeftDown.png
 /importer:TextureImporter
