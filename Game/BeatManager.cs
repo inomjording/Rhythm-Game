@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,7 +32,7 @@ public class BeatManager
     {
         string[] lines = File.ReadAllLines(filePath);
 
-        float currentTime = 0f; // Start at 0 seconds
+        float currentTime = 0f - 150f/speed; // compensate for time it takes to travel
         foreach (var line in lines)
         {
             var beatColor = Color.Cyan;

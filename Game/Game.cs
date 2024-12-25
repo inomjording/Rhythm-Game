@@ -108,10 +108,10 @@ public class BeatGame : Microsoft.Xna.Framework.Game
 
         beatManager.Update(gameTime, activeBeats);
 
-        upButton.Update(gameTime, keyboardState, activeBeats);
-        downButton.Update(gameTime, keyboardState, activeBeats);
-        leftButton.Update(gameTime, keyboardState, activeBeats);
-        rightButton.Update(gameTime, keyboardState, activeBeats);
+        activeBeats = upButton.Update(gameTime, keyboardState, activeBeats);
+        activeBeats = downButton.Update(gameTime, keyboardState, activeBeats);
+        activeBeats = leftButton.Update(gameTime, keyboardState, activeBeats);
+        activeBeats = rightButton.Update(gameTime, keyboardState, activeBeats);
         
         dancingCharacter.Update(gameTime, keyboardState);
 

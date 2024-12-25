@@ -37,7 +37,7 @@ public class BeatButton
         activeColor = Color.Red;    // Active color when key is pressed
         currentColor = defaultColor;
         center = new Vector2(texture.Width / 2f, texture.Height / 2f); // center origin by default
-        targetArea = new Rectangle((int)(position.X - center.X * scale), (int)(position.Y - center.Y * scale), (int)(texture.Width * scale), (int)(texture.Height * scale));
+        targetArea = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
         this.associatedKey = associatedKey;
     }
 
@@ -49,22 +49,21 @@ public class BeatButton
         defaultColor = Color.White; // Default color
         activeColor = Color.Red;    // Active color when key is pressed
         currentColor = defaultColor;
-        center = new Vector2(texture.Width / 2f, texture.Height / 2f); // center origin by default
-        targetArea = new Rectangle((int)(position.X - center.X * scale), (int)(position.Y - center.Y * scale), (int)(texture.Width * scale), (int)(texture.Height * scale));
+        center = new Vector2(position.X + texture.Width / 2f, position.Y + texture.Height / 2f); // center origin by default
+        targetArea = new Rectangle((int)(center.X - texture.Width * scale / 2), (int)(center.Y - texture.Height * scale / 2), (int)(texture.Width * scale), (int)(texture.Height * scale));
     }
 
     // Update Method
-    public void Update(GameTime gameTime, KeyboardState keyboardState, List<Beat> activeBeats)
+    public List<Beat> Update(GameTime gameTime, KeyboardState keyboardState, List<Beat> activeBeats)
     {
         if (keyboardState.IsKeyDown(associatedKey))
         {
             currentColor = activeColor; // Change to active color
-            CheckForCollisions(activeBeats, keyboardState);
+            List<Beat> beats = CheckForCollisions(activeBeats, keyboardState);
+            return beats;
         }
-        else
-        {
-            currentColor = defaultColor; // Revert to default color
-        }
+        currentColor = defaultColor; // Revert to default color
+        return activeBeats;
     }
 
     // Draw Method
@@ -86,7 +85,8 @@ public class BeatButton
         set { rotation = value; }
     }
 
-    public virtual void CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
+    public virtual List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
     {
+        return new List<Beat>();
     }
 }

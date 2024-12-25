@@ -68,6 +68,6 @@ public class Beat
     // Method to get the bounding box of the beat
     public Rectangle GetBoundingBox()
     {
-        return new Rectangle((int)(position.X - origin.X * scale), (int)(position.Y - origin.Y * scale), (int)(texture.Width * scale), (int)(texture.Height * scale));
+        return new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
     }
 }
