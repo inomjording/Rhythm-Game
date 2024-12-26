@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -20,6 +21,23 @@ internal class BeatButtonDown : BeatButton
 
     protected override List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
     {
-        return activeBeats.Where(beat => beat is not BeatDown || !TargetArea.Intersects(beat.GetBoundingBox())).ToList();
+        var beats = new List<Beat>();
+        foreach (var beat in activeBeats)
+        {
+            if (beat is BeatDown)
+            {
+                var collision = CollisionMeasureY(beat);
+                if (collision >= 1)
+                {
+                    beats.Add(beat);
+                }
+            }
+            else
+            {
+                beats.Add(beat);
+            }
+        }
+
+        return beats;
     }
 }

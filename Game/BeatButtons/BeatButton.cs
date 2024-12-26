@@ -29,16 +29,20 @@ public class BeatButton
         defaultColor = Color.White; // Default color
         activeColor = Color.Red;    // Active color when key is pressed
         currentColor = defaultColor;
-        Center = new Vector2(Position.X + texture.Width / 2f, Position.Y + texture.Height / 2f);
         TargetArea = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
+        Center = new Vector2(TargetArea.Center.X, TargetArea.Center.Y);
     }
 
     // Update Method
-    public List<Beat> Update(GameTime gameTime, KeyboardState keyboardState, List<Beat> activeBeats)
+    public List<Beat> Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState oldState, List<Beat> activeBeats)
     {
         if (keyboardState.IsKeyDown(AssociatedKey))
         {
             currentColor = activeColor; // Change to active color
+            if (oldState.IsKeyDown(AssociatedKey))
+            {
+                return activeBeats;
+            }
             var beats = CheckForCollisions(activeBeats, keyboardState);
             return beats;
         }
@@ -55,5 +59,19 @@ public class BeatButton
     protected virtual List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
     {
         return [];
+    }
+
+    protected float CollisionMeasureX(Beat beat)
+    {
+        var boundingBox = beat.GetBoundingBox();
+        var distance = decimal.Abs(boundingBox.Center.X - TargetArea.Center.X);
+        return (float)(2 * distance / TargetArea.Width);
+    }
+
+    protected float CollisionMeasureY(Beat beat)
+    {
+        var boundingBox = beat.GetBoundingBox();
+        var distance = decimal.Abs(boundingBox.Center.Y - TargetArea.Center.Y); // What's the difference between decimal etc.
+        return (float)(2 * distance / TargetArea.Height);
     }
 }

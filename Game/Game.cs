@@ -15,6 +15,7 @@ public class BeatGame : Game
     private Texture2D arrow;
     private Vector2 arrowPosition;
     private Texture2D background;
+    public KeyboardState oldState;
         
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
@@ -88,7 +89,7 @@ public class BeatGame : Game
             { "DanceRightDown", Content.Load<Texture2D>("DanceRightDown") },
             { "DanceUpDown", Content.Load<Texture2D>("DanceUpDown") }
         };
-        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(460, Origin.Y));
+        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(463, Origin.Y));
 
         // Play the sound effect instance
         soundEffectInstance.Play();
@@ -108,12 +109,14 @@ public class BeatGame : Game
 
         beatManager.Update(gameTime, activeBeats);
 
-        activeBeats = upButton.Update(gameTime, keyboardState, activeBeats);
-        activeBeats = downButton.Update(gameTime, keyboardState, activeBeats);
-        activeBeats = leftButton.Update(gameTime, keyboardState, activeBeats);
-        activeBeats = rightButton.Update(gameTime, keyboardState, activeBeats);
+        activeBeats = upButton.Update(gameTime, keyboardState, oldState, activeBeats);
+        activeBeats = downButton.Update(gameTime, keyboardState, oldState, activeBeats);
+        activeBeats = leftButton.Update(gameTime, keyboardState, oldState, activeBeats);
+        activeBeats = rightButton.Update(gameTime, keyboardState, oldState, activeBeats);
         
         dancingCharacter.Update(gameTime, keyboardState);
+        
+        oldState = keyboardState;
 
         base.Update(gameTime);
     }

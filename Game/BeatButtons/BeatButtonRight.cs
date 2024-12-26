@@ -20,6 +20,23 @@ internal class BeatButtonRight : BeatButton
 
     protected override List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
     {
-        return activeBeats.Where(beat => beat is not BeatRight || !TargetArea.Intersects(beat.GetBoundingBox())).ToList();
+        var beats = new List<Beat>();
+        foreach (var beat in activeBeats)
+        {
+            if (beat is BeatRight)
+            {
+                var collision = CollisionMeasureX(beat);
+                if (collision >= 1)
+                {
+                    beats.Add(beat);
+                }
+            }
+            else
+            {
+                beats.Add(beat);
+            }
+        }
+
+        return beats;
     }
 }
