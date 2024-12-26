@@ -1,19 +1,17 @@
-﻿using System.Numerics;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace RhythmGame.Text;
 
 public class HitText
 {
-    Vector2 position;
-    private SpriteFont font;
-    private string text;
+    public Vector2 position;
+    public string Text;
 
-    public HitText(Vector2 position, string text, SpriteFont font)
+    public HitText(Vector2 position, string text)
     {
         this.position = position;
-        this.text = text;
-        this.font = font;
+        Text = text;
     }
     
     

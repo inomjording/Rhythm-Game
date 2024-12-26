@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ internal class BeatButtonLeft : BeatButton
         TargetArea = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
     }
 
-    protected override List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
+    protected override List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState, ScoreManager scoreManager)
     {
         var beats = new List<Beat>();
         foreach (var beat in activeBeats)
@@ -29,6 +30,10 @@ internal class BeatButtonLeft : BeatButton
                 if (collision >= 1)
                 {
                     beats.Add(beat);
+                }
+                else
+                {
+                    scoreManager.QueueHit(collision);
                 }
             }
             else

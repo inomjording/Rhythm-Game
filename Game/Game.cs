@@ -15,7 +15,9 @@ public class BeatGame : Game
     private Texture2D arrow;
     private Vector2 arrowPosition;
     private Texture2D background;
-    public KeyboardState oldState;
+    private KeyboardState oldState;
+    private ScoreManager scoreManager;
+    SpriteFont font;
         
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
@@ -63,6 +65,8 @@ public class BeatGame : Game
         arrowTexture = Content.Load<Texture2D>("active-arrow");
         arrow = Content.Load<Texture2D>("full-arrow");
         background = Content.Load<Texture2D>("bg2");
+        font = Content.Load<SpriteFont>("font");
+        scoreManager = new ScoreManager(font);
 
         soundEffect = Content.Load<SoundEffect>("GET PUMPING!!!");
         soundEffectInstance = soundEffect.CreateInstance();
@@ -107,12 +111,14 @@ public class BeatGame : Game
 
         arrowPosition.Y += 2;
 
-        beatManager.Update(gameTime, activeBeats);
+        beatManager.Update(gameTime, activeBeats, scoreManager);
 
-        activeBeats = upButton.Update(gameTime, keyboardState, oldState, activeBeats);
-        activeBeats = downButton.Update(gameTime, keyboardState, oldState, activeBeats);
-        activeBeats = leftButton.Update(gameTime, keyboardState, oldState, activeBeats);
-        activeBeats = rightButton.Update(gameTime, keyboardState, oldState, activeBeats);
+        activeBeats = upButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
+        activeBeats = downButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
+        activeBeats = leftButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
+        activeBeats = rightButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
+        
+        scoreManager.Update();
         
         dancingCharacter.Update(gameTime, keyboardState);
         
@@ -136,6 +142,8 @@ public class BeatGame : Game
         downButton.Draw(spriteBatch);
         leftButton.Draw(spriteBatch);
         rightButton.Draw(spriteBatch);
+
+        scoreManager.Draw(spriteBatch);
         
         dancingCharacter.Draw(spriteBatch);
         

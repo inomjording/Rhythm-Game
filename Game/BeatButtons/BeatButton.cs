@@ -34,7 +34,7 @@ public class BeatButton
     }
 
     // Update Method
-    public List<Beat> Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState oldState, List<Beat> activeBeats)
+    public List<Beat> Update(GameTime gameTime, KeyboardState keyboardState, KeyboardState oldState, List<Beat> activeBeats, ScoreManager scoreManager)
     {
         if (keyboardState.IsKeyDown(AssociatedKey))
         {
@@ -43,7 +43,7 @@ public class BeatButton
             {
                 return activeBeats;
             }
-            var beats = CheckForCollisions(activeBeats, keyboardState);
+            var beats = CheckForCollisions(activeBeats, keyboardState, scoreManager);
             return beats;
         }
         currentColor = defaultColor; // Revert to default color
@@ -56,7 +56,7 @@ public class BeatButton
         spriteBatch.Draw(texture, Position, null, currentColor, Rotation, Center, scale, spriteEffects, 0f);
     }
 
-    protected virtual List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState)
+    protected virtual List<Beat> CheckForCollisions(List<Beat> activeBeats, KeyboardState keyboardState, ScoreManager scoreManager)
     {
         return [];
     }

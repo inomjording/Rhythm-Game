@@ -25,7 +25,7 @@ public class Beat
     }
 
     // Update Method
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, ScoreManager scoreManager)
     {
         var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -38,6 +38,7 @@ public class Beat
             // Handle beat reaching the center (e.g., trigger an event, remove beat, etc.)
             // For now, we simply stop the beat at the center
             Position = origin;
+            scoreManager.QueueHit(10f);
         }
     }
 

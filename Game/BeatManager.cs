@@ -76,7 +76,7 @@ public class BeatManager
     }
 
     // Method to update and spawn beats based on time
-    public void Update(GameTime gameTime, List<Beat> activeBeats)
+    public void Update(GameTime gameTime, List<Beat> activeBeats, ScoreManager scoreManager)
     {
         var elapsedTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
@@ -89,7 +89,7 @@ public class BeatManager
         // Update all active beats
         foreach (var beat in activeBeats)
         {
-            beat.Update(gameTime);
+            beat.Update(gameTime, scoreManager);
         }
 
         // Remove any beats that have reached the center
