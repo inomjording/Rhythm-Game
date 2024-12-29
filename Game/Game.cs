@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.IO;
 using RhythmGame.BeatButtons;
 using RhythmGame.Beats;
 using RhythmGame.CharacterSprite;
@@ -99,7 +100,7 @@ public class BeatGame : Game
         soundEffectInstance.Play();
 
         beatManager = new BeatManager(0.5f*0.38709677419f, Origin, arrow, 300f);
-        beatManager.LoadBeatsFromFile("../../../GET PUMPING!!!.txt");
+        beatManager.LoadBeatsFromFile("GET PUMPING!!!.txt");
     }
 
     protected override void Update(GameTime gameTime)
