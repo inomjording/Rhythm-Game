@@ -1,20 +1,20 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using RhythmGame.Beats;
+using RhythmGame.BeatButtons;
+using RhythmGame.DanceContext.Beats;
 
-namespace RhythmGame.BeatButtons;
+namespace RhythmGame.DanceContext.BeatButtons;
 
-internal class BeatButtonUp : BeatButton
+internal class BeatButtonDown : BeatButton
 {
-    public BeatButtonUp(Texture2D texture) : base(texture)
+    public BeatButtonDown(Texture2D texture) : base(texture)
     {
-        Position = BeatGame.Origin - new Vector2(0, 50);
-        Rotation = 0f;
-        AssociatedKey = Keys.Up;
-        Center = new Vector2(texture.Width / 2f, texture.Height / 2f);
+        Position = DanceContext.Origin + new Vector2(0, 50);
+        Rotation = MathHelper.Pi;
+        AssociatedKey = Keys.Down;
+        Center = new Vector2(texture.Width / 2f, texture.Height / 2f); // center origin by default
         TargetArea = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
     }
 
@@ -23,7 +23,7 @@ internal class BeatButtonUp : BeatButton
         var beats = new List<Beat>();
         foreach (var beat in activeBeats)
         {
-            if (beat is BeatUp)
+            if (beat is BeatDown)
             {
                 var collision = CollisionMeasureY(beat);
                 if (collision >= 1)

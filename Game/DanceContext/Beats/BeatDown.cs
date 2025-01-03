@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RhythmGame.Beats;
+namespace RhythmGame.DanceContext.Beats;
 
 public class BeatDown : Beat
 {
@@ -13,8 +13,8 @@ public class BeatDown : Beat
         scale,
         color)
     {
-        Position = new Vector2(BeatGame.Origin.X, BeatGame.Origin.Y + 200);
-        Direction = Vector2.Normalize(BeatGame.Origin - Position);
+        Position = new Vector2(DanceContext.Origin.X, DanceContext.Origin.Y + 200);
+        Direction = Vector2.Normalize(DanceContext.Origin - Position);
         Rotation = MathHelper.Pi;
     }
 }

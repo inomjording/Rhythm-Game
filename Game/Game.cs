@@ -1,58 +1,27 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using System.IO;
-using RhythmGame.BeatButtons;
-using RhythmGame.Beats;
-using RhythmGame.CharacterSprite;
 
 namespace RhythmGame;
 
 public class BeatGame : Game
 {
-    private Texture2D arrowTexture;
-    private Texture2D arrow;
-    private Vector2 arrowPosition;
-    private Texture2D background;
-    private Color backgroundTint = Color.White;
-    private KeyboardState oldState;
-    private ScoreManager scoreManager;
-    SpriteFont font;
+    private GameContextType gameContextType = GameContextType.DanceContext;
+    private GameContext gameContext;
         
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
-
-    public static readonly Vector2 Origin = new(200, 240);
-
-    // Create beat buttons for each direction
-    private BeatButtonUp upButton;
-    private BeatButtonDown downButton;
-    private BeatButtonLeft leftButton;
-    private BeatButtonRight rightButton;
-
-
-    private BeatManager beatManager;
-    private List<Beat> activeBeats = [];
-
-    // Audio objects
-    private SoundEffect soundEffect;
-    private SoundEffectInstance soundEffectInstance;
-
-    // Character
-    private DancingCharacter dancingCharacter;
 
     public BeatGame()
     {
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-        IsMouseVisible = true;
+        IsMouseVisible = false;
     }
 
     protected override void Initialize()
     {
-        arrowPosition = new Vector2(75, 0);
+        gameContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
 
         base.Initialize();
     }
@@ -63,50 +32,8 @@ public class BeatGame : Game
 
         // Create a new SpriteBatch, which can be used to draw textures.
         spriteBatch = new SpriteBatch(GraphicsDevice);
-        
-        LoadDanceContext("GET PUMPING!!!");
-    }
 
-    private void LoadDanceContext(string songName)
-    {
-        arrowTexture = Content.Load<Texture2D>("active-arrow");
-        arrow = Content.Load<Texture2D>("full-arrow");
-        background = Content.Load<Texture2D>("bg2");
-        font = Content.Load<SpriteFont>("font");
-        scoreManager = new ScoreManager(font);
-
-        soundEffect = Content.Load<SoundEffect>(songName);
-        soundEffectInstance = soundEffect.CreateInstance();
-        soundEffectInstance.IsLooped = true;
-
-        // Create beat buttons for each direction
-        upButton = new BeatButtonUp(arrowTexture);
-        downButton = new BeatButtonDown(arrowTexture);
-        leftButton = new BeatButtonLeft(arrowTexture);
-        rightButton = new BeatButtonRight(arrowTexture);
-        
-        // Load character
-        var animationTextures = new Dictionary<string, Texture2D>
-        {
-            { "Idle", Content.Load<Texture2D>("Idle") },
-            { "DanceUp", Content.Load<Texture2D>("DanceUp") },
-            { "DanceDown", Content.Load<Texture2D>("DanceDown") },
-            { "DanceLeft", Content.Load<Texture2D>("DanceLeft") },
-            { "DanceRight", Content.Load<Texture2D>("DanceRight") },
-            { "DanceSplit", Content.Load<Texture2D>("DanceSplit") },
-            { "DanceLeftUp", Content.Load<Texture2D>("DanceLeftUp") },
-            { "DanceLeftDown", Content.Load<Texture2D>("DanceLeftDown") },
-            { "DanceRightUp", Content.Load<Texture2D>("DanceRightUp") },
-            { "DanceRightDown", Content.Load<Texture2D>("DanceRightDown") },
-            { "DanceUpDown", Content.Load<Texture2D>("DanceUpDown") }
-        };
-        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(463, Origin.Y));
-
-        // Play the sound effect instance
-        soundEffectInstance.Play();
-
-        beatManager = new BeatManager(Origin, arrow);
-        beatManager.LoadBeatsFromFile("SongTabs/" + songName + ".txt");
+        gameContext.LoadContent();
     }
 
     protected override void Update(GameTime gameTime)
@@ -114,37 +41,9 @@ public class BeatGame : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        var keyboardState = Keyboard.GetState();
-
-        arrowPosition.Y += 2;
-
-        beatManager.Update(gameTime, activeBeats, scoreManager);
-
-        activeBeats = upButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
-        activeBeats = downButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
-        activeBeats = leftButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
-        activeBeats = rightButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
-        
-        scoreManager.Update();
-        UpdateBackgroundTint();
-        
-        dancingCharacter.Update(gameTime, keyboardState);
-        
-        oldState = keyboardState;
+        gameContext.Update(gameTime);
 
         base.Update(gameTime);
-    }
-
-    private void UpdateBackgroundTint()
-    {
-        var multiplier = scoreManager.Multiplier;
-        backgroundTint = multiplier switch
-        {
-            2 => Color.Aqua,
-            4 => Color.Yellow,
-            1 when backgroundTint != Color.White => Color.White,
-            _ => backgroundTint
-        };
     }
 
     protected override void Draw(GameTime gameTime)
@@ -153,19 +52,8 @@ public class BeatGame : Game
         graphics.GraphicsDevice.Clear(Color.Black);
 
         spriteBatch.Begin();
-        spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), backgroundTint);
 
-        BeatManager.Draw(spriteBatch, activeBeats);
-        
-        // Draw all the beat buttons
-        upButton.Draw(spriteBatch);
-        downButton.Draw(spriteBatch);
-        leftButton.Draw(spriteBatch);
-        rightButton.Draw(spriteBatch);
-
-        scoreManager.Draw(spriteBatch);
-        
-        dancingCharacter.Draw(spriteBatch);
+        gameContext.Draw(gameTime, spriteBatch);
         
         spriteBatch.End();
 

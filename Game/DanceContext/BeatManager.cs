@@ -3,9 +3,9 @@ using System.Globalization;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RhythmGame.Beats;
+using RhythmGame.DanceContext.Beats;
 
-namespace RhythmGame;
+namespace RhythmGame.DanceContext;
 
 public class BeatManager
 {
@@ -22,7 +22,7 @@ public class BeatManager
 
     public BeatManager(Vector2 center, Texture2D beatTexture)
     {
-        this.center = BeatGame.Origin;
+        this.center = DanceContext.Origin;
         this.beatTexture = beatTexture;
     }
 

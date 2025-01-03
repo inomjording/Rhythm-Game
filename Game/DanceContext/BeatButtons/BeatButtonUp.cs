@@ -1,21 +1,20 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using System.Linq;
-using RhythmGame.Beats;
+using RhythmGame.BeatButtons;
+using RhythmGame.DanceContext.Beats;
 
-namespace RhythmGame.BeatButtons;
+namespace RhythmGame.DanceContext.BeatButtons;
 
-internal class BeatButtonRight : BeatButton
+internal class BeatButtonUp : BeatButton
 {
-    public BeatButtonRight(Texture2D texture) : base(texture)
+    public BeatButtonUp(Texture2D texture) : base(texture)
     {
-        Position = BeatGame.Origin + new Vector2(50, 0);
-        Rotation = MathHelper.PiOver2;
-        AssociatedKey = Keys.Right;
-        Center = new Vector2(texture.Width / 2f, texture.Height / 2f); // center origin by default
+        Position = DanceContext.Origin - new Vector2(0, 50);
+        Rotation = 0f;
+        AssociatedKey = Keys.Up;
+        Center = new Vector2(texture.Width / 2f, texture.Height / 2f);
         TargetArea = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
     }
 
@@ -24,9 +23,9 @@ internal class BeatButtonRight : BeatButton
         var beats = new List<Beat>();
         foreach (var beat in activeBeats)
         {
-            if (beat is BeatRight)
+            if (beat is BeatUp)
             {
-                var collision = CollisionMeasureX(beat);
+                var collision = CollisionMeasureY(beat);
                 if (collision >= 1)
                 {
                     beats.Add(beat);
@@ -35,7 +34,7 @@ internal class BeatButtonRight : BeatButton
                 {
                     scoreManager.QueueHit(collision);
                 }
-            }   
+            }
             else
             {
                 beats.Add(beat);

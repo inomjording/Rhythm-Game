@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RhythmGame.Beats;
+namespace RhythmGame.DanceContext.Beats;
 
 public class Beat
 {
@@ -10,7 +10,7 @@ public class Beat
     protected Vector2 Position;
     protected Vector2 Direction;
     private readonly float speed;
-    private readonly Vector2 origin = BeatGame.Origin;
+    private readonly Vector2 origin = DanceContext.Origin;
     private readonly float scale;
     protected float Rotation;
     private readonly Color color;
