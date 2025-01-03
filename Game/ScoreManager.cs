@@ -15,7 +15,7 @@ public class ScoreManager
     private List<float> hitQueue;
     private readonly SpriteFont font;
     private int chain;
-    private int multiplier = 1;
+    internal int Multiplier = 1;
     
 
     public ScoreManager(SpriteFont font)
@@ -40,16 +40,16 @@ public class ScoreManager
         {
             case < 0.25f:
                 IncreaseChain();
-                return multiplier * 500;
+                return Multiplier * 500;
             case < 0.5f:
                 IncreaseChain();
-                return multiplier * 300;
+                return Multiplier * 300;
             case < 0.95f:
                 IncreaseChain();
-                return multiplier * 100;
+                return Multiplier * 100;
             default:
                 chain = 0;
-                multiplier = 1;
+                Multiplier = 1;
                 return 0;
         }
     }
@@ -57,11 +57,11 @@ public class ScoreManager
     private void IncreaseChain()
     {
         chain++;
-        multiplier = chain switch
+        Multiplier = chain switch
         {
-            >= 50 => 4,
-            >= 20 => 2,
-            _ => multiplier
+            >= 30 => 4,
+            >= 15 => 2,
+            _ => Multiplier
         };
     }
 

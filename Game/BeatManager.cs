@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,27 +15,27 @@ public class BeatManager
     private readonly Queue<(Beat, float)> leftQueue = new();
     private readonly Queue<(Beat, float)> rightQueue = new();
 
-    private readonly float beatInterval; // Time between beats (in seconds)
+    private float beatInterval; // Time between beats (in seconds)
     private Vector2 center;
     private readonly Texture2D beatTexture;
-    private readonly float speed;
+    private float speed;
 
-    public BeatManager(float beatInterval, Vector2 center, Texture2D beatTexture, float speed)
+    public BeatManager(Vector2 center, Texture2D beatTexture)
     {
-        this.beatInterval = beatInterval;
         this.center = BeatGame.Origin;
         this.beatTexture = beatTexture;
-        this.speed = speed;
     }
 
     // Method to load beats from a text file
     public void LoadBeatsFromFile(string filePath)
     {
         var lines = File.ReadAllLines(filePath);
+        LoadSpeedAndInterval(lines[0]);
 
         var currentTime = 0f - 150f/speed; // compensate for time it takes to travel
-        foreach (var line in lines)
+        for (var i = 1; i < lines.Length; i++)
         {
+            var line = lines[i];
             var beatColor = Color.Cyan;
             if (line.Length > 1)
             {
@@ -63,6 +64,13 @@ public class BeatManager
 
             currentTime += beatInterval; // Move to the next beat time
         }
+    }
+
+    private void LoadSpeedAndInterval(string dataString)
+    {
+        var split = dataString.Split(',');
+        beatInterval = float.Parse(split[0], CultureInfo.InvariantCulture) * 0.5f;
+        speed = float.Parse(split[1], CultureInfo.CurrentCulture);
     }
 
     // Helper method to spawn beats from a queue based on the elapsed time

@@ -16,6 +16,7 @@ public class BeatGame : Game
     private Texture2D arrow;
     private Vector2 arrowPosition;
     private Texture2D background;
+    private Color backgroundTint = Color.White;
     private KeyboardState oldState;
     private ScoreManager scoreManager;
     SpriteFont font;
@@ -63,13 +64,18 @@ public class BeatGame : Game
         // Create a new SpriteBatch, which can be used to draw textures.
         spriteBatch = new SpriteBatch(GraphicsDevice);
         
+        LoadDanceContext("GET PUMPING!!!");
+    }
+
+    private void LoadDanceContext(string songName)
+    {
         arrowTexture = Content.Load<Texture2D>("active-arrow");
         arrow = Content.Load<Texture2D>("full-arrow");
         background = Content.Load<Texture2D>("bg2");
         font = Content.Load<SpriteFont>("font");
         scoreManager = new ScoreManager(font);
 
-        soundEffect = Content.Load<SoundEffect>("GET PUMPING!!!");
+        soundEffect = Content.Load<SoundEffect>(songName);
         soundEffectInstance = soundEffect.CreateInstance();
         soundEffectInstance.IsLooped = true;
 
@@ -99,8 +105,8 @@ public class BeatGame : Game
         // Play the sound effect instance
         soundEffectInstance.Play();
 
-        beatManager = new BeatManager(0.5f*0.38709677419f, Origin, arrow, 300f);
-        beatManager.LoadBeatsFromFile("GET PUMPING!!!.txt");
+        beatManager = new BeatManager(Origin, arrow);
+        beatManager.LoadBeatsFromFile("SongTabs/" + songName + ".txt");
     }
 
     protected override void Update(GameTime gameTime)
@@ -120,6 +126,7 @@ public class BeatGame : Game
         activeBeats = rightButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
         
         scoreManager.Update();
+        UpdateBackgroundTint();
         
         dancingCharacter.Update(gameTime, keyboardState);
         
@@ -128,13 +135,25 @@ public class BeatGame : Game
         base.Update(gameTime);
     }
 
+    private void UpdateBackgroundTint()
+    {
+        var multiplier = scoreManager.Multiplier;
+        backgroundTint = multiplier switch
+        {
+            2 => Color.Aqua,
+            4 => Color.Yellow,
+            1 when backgroundTint != Color.White => Color.White,
+            _ => backgroundTint
+        };
+    }
+
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
         graphics.GraphicsDevice.Clear(Color.Black);
 
         spriteBatch.Begin();
-        spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), Color.White);
+        spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), backgroundTint);
 
         BeatManager.Draw(spriteBatch, activeBeats);
         
