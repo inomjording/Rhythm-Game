@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -7,6 +8,7 @@ namespace RhythmGame.MenuContext;
 
 public class MenuContext(ContentManager content) : IGameContext
 {
+    public event Action<int> OnMenuItemSelected;
     private Menu mainMenu;
     
     public void LoadContent()
@@ -28,17 +30,7 @@ public class MenuContext(ContentManager content) : IGameContext
 
         if (!keyboardState.IsKeyDown(Keys.Enter)) return;
         var selectedIndex = mainMenu.GetSelectedIndex();
-        switch (selectedIndex)
-        {
-            case 0:
-                // Start the game
-                break;
-            case 1:
-                // Open options
-                break;
-            case 2:
-                break;
-        }
+        OnMenuItemSelected?.Invoke(selectedIndex);
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

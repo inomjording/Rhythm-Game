@@ -7,7 +7,9 @@ namespace RhythmGame;
 public class BeatGame : Game
 {
     private GameContextType gameContextType = GameContextType.MenuContext;
-    private IGameContext gameContext;
+    private ContextManager contextManager;
+    private MenuContext.MenuContext menuContext;
+    private DanceContext.DanceContext danceContext;
         
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
@@ -21,9 +23,11 @@ public class BeatGame : Game
 
     protected override void Initialize()
     {
-        if (gameContextType == GameContextType.MenuContext) gameContext = new MenuContext.MenuContext(Content);
-        else gameContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
+        menuContext = new MenuContext.MenuContext(Content);
+        menuContext.OnMenuItemSelected += HandleMenuSelection;
 
+        contextManager = new ContextManager();
+        contextManager.SetContext(menuContext);
         base.Initialize();
     }
 
@@ -31,10 +35,8 @@ public class BeatGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // Create a new SpriteBatch, which can be used to draw textures.
-        spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        gameContext.LoadContent();
+        
+        contextManager.LoadContent();
     }
 
     protected override void Update(GameTime gameTime)
@@ -42,10 +44,33 @@ public class BeatGame : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        gameContext.Update(gameTime);
+        contextManager.Update(gameTime);
 
         base.Update(gameTime);
     }
+    
+    private void HandleMenuSelection(int selectedIndex)
+    {
+        switch (selectedIndex)
+        {
+            case 0:
+                danceContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
+                contextManager.SetContext(danceContext);
+                gameContextType = GameContextType.DanceContext;
+                contextManager.LoadContent();
+                break;
+
+            case 1:
+                // Open options (create and manage an OptionsContext if needed)
+                break;
+
+            case 2:
+                // Exit the game
+                Exit();
+                break;
+        }
+    }
+
 
     protected override void Draw(GameTime gameTime)
     {
@@ -54,7 +79,7 @@ public class BeatGame : Game
 
         spriteBatch.Begin();
 
-        gameContext.Draw(gameTime, spriteBatch);
+        contextManager.Draw(gameTime, spriteBatch);
         
         spriteBatch.End();
 
