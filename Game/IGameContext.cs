@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RhythmGame;
 
-public interface GameContext
+public interface IGameContext
 { 
     void LoadContent();
     void Update(GameTime gameTime);

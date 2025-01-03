@@ -10,7 +10,7 @@ using RhythmGame.DanceContext.Beats;
 
 namespace RhythmGame.DanceContext;
 
-public class DanceContext(ContentManager content, string selectedSong) : GameContext
+public class DanceContext(ContentManager content, string selectedSong) : IGameContext
 {
     private Texture2D arrowTexture;
     private Texture2D arrow;

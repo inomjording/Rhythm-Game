@@ -6,8 +6,8 @@ namespace RhythmGame;
 
 public class BeatGame : Game
 {
-    private GameContextType gameContextType = GameContextType.DanceContext;
-    private GameContext gameContext;
+    private GameContextType gameContextType = GameContextType.MenuContext;
+    private IGameContext gameContext;
         
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
@@ -21,7 +21,8 @@ public class BeatGame : Game
 
     protected override void Initialize()
     {
-        gameContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
+        if (gameContextType == GameContextType.MenuContext) gameContext = new MenuContext.MenuContext(Content);
+        else gameContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
 
         base.Initialize();
     }
