@@ -43,7 +43,7 @@ public class BeatManager
             }
              
             // Check each character in the line
-            foreach (char direction in line)
+            foreach (var direction in line)
             {
                 switch (direction)
                 {
@@ -74,25 +74,26 @@ public class BeatManager
     }
 
     // Helper method to spawn beats from a queue based on the elapsed time
-    private static void SpawnBeatsFromQueue(Queue<(Beat, float)> beatQueue, float elapsedTime, List<Beat> activeBeats)
+    private static List<Beat> SpawnBeatsFromQueue(Queue<(Beat, float)> beatQueue, float elapsedTime)
     {
+        var beats = new List<Beat>();
         while (beatQueue.Count > 0 && elapsedTime >= beatQueue.Peek().Item2)
         {
-            var (beat, spawnTime) = beatQueue.Dequeue();
-            activeBeats.Add(beat);
+            var (beat, _) = beatQueue.Dequeue();
+            beats.Add(beat);
         }
+        return beats;
     }
 
     // Method to update and spawn beats based on time
-    public void Update(GameTime gameTime, List<Beat> activeBeats, ScoreManager scoreManager)
+    public void Update(GameTime gameTime, float elapsedTime, List<Beat> activeBeats, ScoreManager scoreManager)
     {
-        var elapsedTime = (float)gameTime.TotalGameTime.TotalSeconds;
 
         // Spawn beats for each direction queue
-        SpawnBeatsFromQueue(upQueue, elapsedTime, activeBeats);
-        SpawnBeatsFromQueue(downQueue, elapsedTime, activeBeats);
-        SpawnBeatsFromQueue(leftQueue, elapsedTime, activeBeats);
-        SpawnBeatsFromQueue(rightQueue, elapsedTime, activeBeats);
+        activeBeats.AddRange(SpawnBeatsFromQueue(upQueue, elapsedTime));
+        activeBeats.AddRange(SpawnBeatsFromQueue(downQueue, elapsedTime));
+        activeBeats.AddRange(SpawnBeatsFromQueue(leftQueue, elapsedTime));
+        activeBeats.AddRange(SpawnBeatsFromQueue(rightQueue, elapsedTime));
 
         // Update all active beats
         foreach (var beat in activeBeats)

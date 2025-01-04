@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -39,6 +41,8 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
 
     // Character
     private DancingCharacter dancingCharacter;
+
+    private Stopwatch stopwatch = Stopwatch.StartNew();
 
     public void LoadContent()
     {
@@ -86,9 +90,9 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
     {
         var keyboardState = Keyboard.GetState();
 
-        arrowPosition.Y += 2;
+        var elapsedTime = (float)stopwatch.Elapsed.TotalSeconds;
 
-        beatManager.Update(gameTime, activeBeats, scoreManager);
+        beatManager.Update(gameTime, elapsedTime, activeBeats, scoreManager);
 
         activeBeats = upButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);
         activeBeats = downButton.Update(gameTime, keyboardState, oldState, activeBeats, scoreManager);

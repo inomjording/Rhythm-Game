@@ -5,7 +5,6 @@ namespace RhythmGame.DanceContext.Beats;
 
 public class Beat
 {
-    public char BeatCode;
     private readonly Texture2D texture;
     protected Vector2 Position;
     protected Vector2 Direction;
@@ -33,13 +32,11 @@ public class Beat
         Position += Direction * speed * deltaTime;
 
         // Check if the beat has reached the center
-        if (Vector2.Distance(Position, origin) < speed * deltaTime)
-        {
-            // Handle beat reaching the center (e.g., trigger an event, remove beat, etc.)
-            // For now, we simply stop the beat at the center
-            Position = origin;
-            scoreManager.QueueHit(10f);
-        }
+        if (!(Vector2.Distance(Position, origin) < speed * deltaTime)) return;
+        // Handle beat reaching the center (e.g., trigger an event, remove beat, etc.)
+        // For now, we simply stop the beat at the center
+        Position = origin;
+        scoreManager.QueueHit(10f);
     }
 
     // Draw Method
@@ -57,7 +54,6 @@ public class Beat
             0f);
     }
 
-    // Optional: A property or method to check if the beat has reached the center
     public bool HasReachedCenter()
     {
         return Position == origin;
