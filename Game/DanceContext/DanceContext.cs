@@ -82,7 +82,7 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
         // Play the sound effect instance
         soundEffectInstance.Play();
 
-        beatManager = new BeatManager(Origin, arrow);
+        beatManager = new BeatManager(arrow);
         beatManager.LoadBeatsFromFile("DanceContext/SongTabs/" + selectedSong + ".txt");
     }
 

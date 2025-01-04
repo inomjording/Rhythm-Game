@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RhythmGame.MenuContext;
 
-public class Menu(SpriteFont font, Vector2 position, Color normalColor, Color selectedColor)
+public class Menu(SpriteFont font, Vector2 position)
 {
     private readonly List<MenuItem> menuItems = [];
     private int selectedIndex;
@@ -13,9 +13,16 @@ public class Menu(SpriteFont font, Vector2 position, Color normalColor, Color se
     private double timeSinceLastInput;
     private const double InputCooldown = 0.2; // Prevent spamming input
 
+    private readonly Color normalColor = Color.White;
+
     public void AddMenuItem(string text)
     {
         menuItems.Add(new MenuItem(text));
+    }
+
+    public void AddMenuItem(string text, Color selectedColor)
+    {
+        menuItems.Add(new MenuItem(text, selectedColor));
     }
 
     public void Update(GameTime gameTime, KeyboardState keyboardState)
@@ -49,7 +56,7 @@ public class Menu(SpriteFont font, Vector2 position, Color normalColor, Color se
 
         foreach (var menuItem in menuItems)
         {
-            var color = menuItem.IsSelected ? selectedColor : normalColor;
+            var color = menuItem.IsSelected ? menuItem.SelectedColor : normalColor;
             spriteBatch.DrawString(font, menuItem.Text, currentPosition, color);
 
             currentPosition.Y += font.LineSpacing; // Move down to draw the next item

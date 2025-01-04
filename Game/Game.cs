@@ -6,7 +6,6 @@ namespace RhythmGame;
 
 public class BeatGame : Game
 {
-    private GameContextType gameContextType = GameContextType.MenuContext;
     private ContextManager contextManager;
     private MenuContext.MenuContext menuContext;
     private DanceContext.DanceContext danceContext;
@@ -51,23 +50,39 @@ public class BeatGame : Game
     
     private void HandleMenuSelection(int selectedIndex)
     {
-        switch (selectedIndex)
+        if (menuContext.GetNameOfCurrentMenu() == "Main Menu")
         {
-            case 0:
-                danceContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
-                contextManager.SetContext(danceContext);
-                gameContextType = GameContextType.DanceContext;
-                contextManager.LoadContent();
-                break;
+            switch (selectedIndex)
+            {
+                case 0:
+                    menuContext.SwitchCurrentMenu("Song Menu");
+                    break;
+                
+                case 1:
+                    // Open options (create and manage an OptionsContext if needed)
+                    break;
 
-            case 1:
-                // Open options (create and manage an OptionsContext if needed)
-                break;
+                case 2:
+                    // Exit the game
+                    Exit();
+                    break;
+            }
+        }
+        else
+        {
+            switch (selectedIndex)
+            {
+                case 0:
+                    danceContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
+                    contextManager.SetContext(danceContext);
+                    contextManager.LoadContent();
+                    break;
 
-            case 2:
-                // Exit the game
-                Exit();
-                break;
+                case 1:
+                    menuContext.SwitchCurrentMenu("Main Menu");
+                    break;
+                
+            }
         }
     }
 

@@ -7,7 +7,7 @@ using RhythmGame.DanceContext.Beats;
 
 namespace RhythmGame.DanceContext;
 
-public class BeatManager
+public class BeatManager(Texture2D beatTexture)
 {
     // Separate queues for each direction
     private readonly Queue<(Beat, float)> upQueue = new();
@@ -16,15 +16,7 @@ public class BeatManager
     private readonly Queue<(Beat, float)> rightQueue = new();
 
     private float beatInterval; // Time between beats (in seconds)
-    private Vector2 center;
-    private readonly Texture2D beatTexture;
     private float speed;
-
-    public BeatManager(Vector2 center, Texture2D beatTexture)
-    {
-        this.center = DanceContext.Origin;
-        this.beatTexture = beatTexture;
-    }
 
     // Method to load beats from a text file
     public void LoadBeatsFromFile(string filePath)
