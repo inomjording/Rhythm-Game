@@ -21,7 +21,7 @@ public class ScoreScreenContext(SpriteFont font) : IGameContext
             yPosition += 30;
         }
 
-        spriteBatch.DrawString(font, "Press ESC to EXIT\n(going back is not implemented. You are stuck here.)", new Vector2(100, yPosition + 20), Color.Gray);
+        spriteBatch.DrawString(font, "Press ESC to EXIT.\nGoing back is not implemented.\nYou are stuck here.", new Vector2(100, yPosition + 20), Color.Gray);
     }
 
     public void LoadContent()
