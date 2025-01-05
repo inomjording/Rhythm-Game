@@ -33,10 +33,11 @@ public class BeatGame : Game
     {
         gameFont = Content.Load<SpriteFont>("font");
         
-        menuContext = new MenuContext.MenuContext(Content, gameFont);
+        contextManager = new ContextManager();
+
+        menuContext = new MenuContext.MenuContext(Content, gameFont, contextManager, Exit);
         menuContext.OnMenuItemSelected += HandleMenuSelection;
 
-        contextManager = new ContextManager();
         contextManager.SetContext(menuContext);
         base.Initialize();
     }
@@ -65,81 +66,7 @@ public class BeatGame : Game
     {
         confirmSoundInstance.Stop();
         confirmSoundInstance.Play();
-        switch (menuContext.GetNameOfCurrentMenu())
-        {
-            case "Main Menu": HandleMainMenuSelection(selectedIndex);
-                break;
-            case "Song Menu": HandleSongMenuSelection(selectedIndex);
-                break;
-            case "Song Info Menu": HandleSongInfoMenuSelection(selectedIndex);
-                break;
-        }
-    }
-
-    private void HandleMainMenuSelection(int selectedIndex)
-    {
-        switch (selectedIndex)
-        {
-            case 0:
-                menuContext.SwitchCurrentMenu("Song Menu");
-                break;
-                
-            case 1:
-                break;
-
-            case 2:
-                // Exit the game
-                Exit();
-                break;
-        }
-    }
-
-    private void HandleSongMenuSelection(int selectedIndex)
-    {
-        switch (selectedIndex)
-        {
-            case 0:
-                selectedSong = "GET PUMPING!!!";
-                menuContext.SwitchCurrentMenu("Song Info Menu");
-                break;
-                
-            case 1:
-                selectedSong = "Holy melancholy";
-                menuContext.SwitchCurrentMenu("Song Info Menu");
-                break;
-                
-            case 2:
-                selectedSong = "7";
-                menuContext.SwitchCurrentMenu("Song Info Menu");
-                break;
-
-            case 3:
-                menuContext.SwitchCurrentMenu("Main Menu");
-                break;
-                
-        }
-    }
-
-    private void HandleSongInfoMenuSelection(int selectedIndex)
-    {
-        switch (selectedIndex)
-        {
-            case 0:
-                danceContext = new DanceContext.DanceContext(Content, selectedSong, gameFont);
-                contextManager.SetContext(danceContext);
-                contextManager.LoadContent();
-                break;
-                
-            case 1:
-                var scoreContext = new ScoreScreenContext(gameFont, selectedSong);
-                contextManager.SetContext(scoreContext);
-                break;
-                
-            case 2:
-                menuContext.SwitchCurrentMenu("Song Menu");
-                break;
-                
-        }
+        menuContext.InvokeSelectedMenuItem(selectedIndex);
     }
 
     protected override void Draw(GameTime gameTime)

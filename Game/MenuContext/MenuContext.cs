@@ -3,38 +3,27 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RhythmGame.MenuContext.Menus;
 
 namespace RhythmGame.MenuContext;
 
-public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameContext
+public class MenuContext(ContentManager content, SpriteFont gameFont, ContextManager contextManager, Action exit) : IGameContext
 {
     public event Action<int> OnMenuItemSelected;
     private Menu mainMenu;
     private Menu songMenu;
-    private Menu songInfoMenu;
+    public Menu SongInfoMenu;
     private Menu currentMenu;
+    private MenuFactory factory;
 
     private KeyboardState oldKeyboardState;
     
     public void LoadContent()
     {
-        mainMenu = new Menu(content, gameFont, new Vector2(100, 100));
+        factory = new MenuFactory(content, gameFont, new Vector2(100, 100), contextManager, this, exit);
 
-        mainMenu.AddMenuItem("Start Game");
-        mainMenu.AddMenuItem("Options");
-        mainMenu.AddMenuItem("Exit", Color.Red);
-        
-        songMenu = new Menu(content, gameFont, new Vector2(100, 100));
-        
-        songMenu.AddMenuItem("GET PUMPING!!!");
-        songMenu.AddMenuItem("Holy melancholy");
-        songMenu.AddMenuItem("7");
-        songMenu.AddMenuItem("Back", Color.Red);
-        
-        songInfoMenu = new Menu(content, gameFont, new Vector2(100, 100));
-        songInfoMenu.AddMenuItem("Start");
-        songInfoMenu.AddMenuItem("Score");
-        songInfoMenu.AddMenuItem("Back", Color.Red);
+        mainMenu = factory.CreateMainMenu();
+        songMenu = new SongMenu(content, gameFont, new Vector2(100, 100), factory, this);
         
         currentMenu = mainMenu;
 
@@ -71,7 +60,7 @@ public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameCon
         {
             return "Song Menu";
         }
-        return currentMenu == songInfoMenu ? "Song Info Menu" : "";
+        return currentMenu == SongInfoMenu ? "Song Info Menu" : "";
     }
 
     public void SwitchCurrentMenu(string menuName)
@@ -80,8 +69,13 @@ public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameCon
         {
             "Song Menu" => songMenu,
             "Main Menu" => mainMenu,
-            "Song Info Menu" => songInfoMenu,
+            "Song Info Menu" => SongInfoMenu,
             _ => currentMenu
         };
+    }
+
+    public void InvokeSelectedMenuItem(int selectedIndex)
+    {
+        currentMenu.GetMenuItem(selectedIndex).InvokeAction();
     }
 }

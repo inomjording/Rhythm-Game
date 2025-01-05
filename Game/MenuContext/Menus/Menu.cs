@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace RhythmGame.MenuContext;
+namespace RhythmGame.MenuContext.Menus;
 
 public class Menu
 {
@@ -31,14 +32,14 @@ public class Menu
         selectSoundInstance.IsLooped = false;
     }
 
-    public void AddMenuItem(string text)
+    public void AddMenuItem(string text, Action action)
     {
-        menuItems.Add(new MenuItem(text));
+        menuItems.Add(new MenuItem(text, action));
     }
 
-    public void AddMenuItem(string text, Color selectedColor)
+    public void AddMenuItem(string text, Action action, Color selectedColor)
     {
-        menuItems.Add(new MenuItem(text, selectedColor));
+        menuItems.Add(new MenuItem(text, action, selectedColor));
     }
 
     public void Update(GameTime gameTime, KeyboardState keyboardState)
@@ -87,4 +88,6 @@ public class Menu
     {
         return selectedIndex;
     }
+    
+    public MenuItem GetMenuItem(int index) => menuItems[index];
 }
