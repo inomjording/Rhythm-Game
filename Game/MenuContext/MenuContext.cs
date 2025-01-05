@@ -11,6 +11,7 @@ public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameCon
     public event Action<int> OnMenuItemSelected;
     private Menu mainMenu;
     private Menu songMenu;
+    private Menu songInfoMenu;
     private Menu currentMenu;
 
     private KeyboardState oldKeyboardState;
@@ -29,6 +30,11 @@ public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameCon
         songMenu.AddMenuItem("Holy melancholy");
         songMenu.AddMenuItem("7");
         songMenu.AddMenuItem("Back", Color.Red);
+        
+        songInfoMenu = new Menu(content, gameFont, new Vector2(100, 100));
+        songInfoMenu.AddMenuItem("Start");
+        songInfoMenu.AddMenuItem("Score");
+        songInfoMenu.AddMenuItem("Back", Color.Red);
         
         currentMenu = mainMenu;
 
@@ -57,7 +63,15 @@ public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameCon
 
     public string GetNameOfCurrentMenu()
     {
-        return currentMenu == songMenu ? "Song Menu" : "Main Menu";
+        if (currentMenu == mainMenu)
+        {
+            return "Main Menu";
+        }
+        if (currentMenu == songMenu)
+        {
+            return "Song Menu";
+        }
+        return currentMenu == songInfoMenu ? "Song Info Menu" : "";
     }
 
     public void SwitchCurrentMenu(string menuName)
@@ -66,6 +80,7 @@ public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameCon
         {
             "Song Menu" => songMenu,
             "Main Menu" => mainMenu,
+            "Song Info Menu" => songInfoMenu,
             _ => currentMenu
         };
     }

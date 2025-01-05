@@ -40,13 +40,13 @@ public class ScoreManager
         {
             case < 0.25f:
                 IncreaseChain();
-                return Multiplier * 500;
+                return Multiplier * 5;
             case < 0.5f:
                 IncreaseChain();
-                return Multiplier * 300;
+                return Multiplier * 3;
             case < 0.95f:
                 IncreaseChain();
-                return Multiplier * 100;
+                return Multiplier * 1;
             default:
                 chain = 0;
                 Multiplier = 1;

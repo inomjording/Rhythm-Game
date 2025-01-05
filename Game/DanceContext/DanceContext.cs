@@ -144,7 +144,7 @@ public class DanceContext(ContentManager content, string selectedSong, SpriteFon
             Date = DateTime.Now
         };
 
-        ScoreScreenManager.AddScore(newScore);
+        ScoreScreenManager.AddScore(newScore, selectedSong);
     }
 
 }

@@ -1,7 +1,23 @@
-﻿[
-  {
-    "PlayerName": "inomjording",
-    "Points": 123,
-    "Date": "2025-01-05T00:00:00"
-  }
-]
+﻿{
+  "7": [
+    {
+      "PlayerName": "inomjording",
+      "Points": 123,
+      "Date": "2025-01-05T00:00:00"
+    }
+  ],
+  "GET PUMPING!!!": [
+    {
+      "PlayerName": "inomjording",
+      "Points": 1234,
+      "Date": "2025-01-05T00:00:00"
+    }
+  ],
+  "Holy melancholy": [
+    {
+      "PlayerName": "inomjording",
+      "Points": 1231231,
+      "Date": "2025-01-05T00:00:00"
+    }
+  ]
+}

@@ -20,6 +20,8 @@ public class BeatGame : Game
 
     private SpriteFont gameFont;
 
+    private string selectedSong;
+
     public BeatGame()
     {
         graphics = new GraphicsDeviceManager(this);
@@ -72,8 +74,6 @@ public class BeatGame : Game
                     break;
                 
                 case 1:
-                    var scoreContext = new ScoreScreenContext(gameFont);
-                    contextManager.SetContext(scoreContext);
                     break;
 
                 case 2:
@@ -82,26 +82,23 @@ public class BeatGame : Game
                     break;
             }
         }
-        else
+        else if (menuContext.GetNameOfCurrentMenu() == "Song Menu")
         {
             switch (selectedIndex)
             {
                 case 0:
-                    danceContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!", gameFont);
-                    contextManager.SetContext(danceContext);
-                    contextManager.LoadContent();
+                    selectedSong = "GET PUMPING!!!";
+                    menuContext.SwitchCurrentMenu("Song Info Menu");
                     break;
                 
                 case 1:
-                    danceContext = new DanceContext.DanceContext(Content, "Holy melancholy", gameFont);
-                    contextManager.SetContext(danceContext);
-                    contextManager.LoadContent();
+                    selectedSong = "Holy melancholy";
+                    menuContext.SwitchCurrentMenu("Song Info Menu");
                     break;
                 
                 case 2:
-                    danceContext = new DanceContext.DanceContext(Content, "7", gameFont);
-                    contextManager.SetContext(danceContext);
-                    contextManager.LoadContent();
+                    selectedSong = "7";
+                    menuContext.SwitchCurrentMenu("Song Info Menu");
                     break;
 
                 case 3:
@@ -109,6 +106,28 @@ public class BeatGame : Game
                     break;
                 
             }
+        }
+        else if (menuContext.GetNameOfCurrentMenu() == "Song Info Menu")
+        {
+            switch (selectedIndex)
+            {
+                case 0:
+                    danceContext = new DanceContext.DanceContext(Content, selectedSong, gameFont);
+                    contextManager.SetContext(danceContext);
+                    contextManager.LoadContent();
+                    break;
+                
+                case 1:
+                    var scoreContext = new ScoreScreenContext(gameFont, selectedSong);
+                    contextManager.SetContext(scoreContext);
+                    break;
+                
+                case 2:
+                    menuContext.SwitchCurrentMenu("Song Menu");
+                    break;
+                
+            }
+            
         }
     }
 
