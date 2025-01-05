@@ -19,18 +19,19 @@ public class MenuContext(ContentManager content) : IGameContext
     {
         var font = content.Load<SpriteFont>("font"); // Add a SpriteFont to your Content folder
         
-        mainMenu = new Menu(font, new Vector2(100, 100));
+        mainMenu = new Menu(content, font, new Vector2(100, 100));
 
         mainMenu.AddMenuItem("Start Game");
         mainMenu.AddMenuItem("Options");
         mainMenu.AddMenuItem("Exit", Color.Red);
         
-        songMenu = new Menu(font, new Vector2(100, 100));
+        songMenu = new Menu(content, font, new Vector2(100, 100));
         
         songMenu.AddMenuItem("GET PUMPING!!!");
         songMenu.AddMenuItem("Back", Color.Red);
         
         currentMenu = mainMenu;
+
     }
 
     public void Update(GameTime gameTime)

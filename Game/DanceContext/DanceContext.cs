@@ -36,13 +36,13 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
     private List<Beat> activeBeats = [];
 
     // Audio objects
-    private SoundEffect soundEffect;
-    private SoundEffectInstance soundEffectInstance;
+    private SoundEffect song;
+    private SoundEffectInstance songInstance;
 
     // Character
     private DancingCharacter dancingCharacter;
 
-    private Stopwatch stopwatch = Stopwatch.StartNew();
+    private readonly Stopwatch stopwatch = Stopwatch.StartNew();
 
     public void LoadContent()
     {
@@ -52,9 +52,9 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
         font = content.Load<SpriteFont>("font");
         scoreManager = new ScoreManager(font);
 
-        soundEffect = content.Load<SoundEffect>(selectedSong);
-        soundEffectInstance = soundEffect.CreateInstance();
-        soundEffectInstance.IsLooped = true;
+        song = content.Load<SoundEffect>(selectedSong);
+        songInstance = song.CreateInstance();
+        songInstance.IsLooped = false;
 
         // Create beat buttons for each direction
         upButton = new BeatButtonUp(arrowTexture);
@@ -80,7 +80,7 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
         dancingCharacter = new DancingCharacter(animationTextures, new Vector2(463, Origin.Y));
 
         // Play the sound effect instance
-        soundEffectInstance.Play();
+        songInstance.Play();
 
         beatManager = new BeatManager(arrow);
         beatManager.LoadBeatsFromFile("DanceContext/SongTabs/" + selectedSong + ".txt");

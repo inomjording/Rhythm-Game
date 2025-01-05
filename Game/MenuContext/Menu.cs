@@ -1,12 +1,17 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace RhythmGame.MenuContext;
 
-public class Menu(SpriteFont font, Vector2 position)
+public class Menu
 {
+    private readonly SpriteFont font;
+    private readonly Vector2 position;
+    
     private readonly List<MenuItem> menuItems = [];
     private int selectedIndex;
 
@@ -14,6 +19,17 @@ public class Menu(SpriteFont font, Vector2 position)
     private const double InputCooldown = 0.2; // Prevent spamming input
 
     private readonly Color normalColor = Color.White;
+
+    private readonly SoundEffectInstance selectSoundInstance;
+
+    public Menu(ContentManager content, SpriteFont font, Vector2 position)
+    {
+        this.font = font;
+        this.position = position;
+        var selectSound1 = content.Load<SoundEffect>("Select effect");
+        selectSoundInstance = selectSound1.CreateInstance();
+        selectSoundInstance.IsLooped = false;
+    }
 
     public void AddMenuItem(string text)
     {
@@ -35,11 +51,15 @@ public class Menu(SpriteFont font, Vector2 position)
             {
                 selectedIndex = (selectedIndex - 1 + menuItems.Count) % menuItems.Count;
                 timeSinceLastInput = 0;
+                selectSoundInstance.Stop();
+                selectSoundInstance.Play();
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
                 selectedIndex = (selectedIndex + 1) % menuItems.Count;
                 timeSinceLastInput = 0;
+                selectSoundInstance.Stop();
+                selectSoundInstance.Play();
             }
         }
 

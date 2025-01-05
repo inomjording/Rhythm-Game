@@ -139,6 +139,12 @@
 /processorParam:TextureFormat=Color
 /build:character-up.png;DanceDown.png
 
+#begin Confirm effect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Confirm effect.wav
+
 #begin DanceLeftDown.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -199,6 +205,13 @@
 /processorParam:TextureFormat=Color
 /build:DanceUpDown.png
 
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font.spritefont
+
 #begin full-arrow-export.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -217,10 +230,9 @@
 /processorParam:Quality=Best
 /build:GET PUMPING!!!.wav
 
-#begin font.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:font.spritefont
+#begin Select effect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Select effect.wav
 

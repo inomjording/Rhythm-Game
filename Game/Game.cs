@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,6 +13,9 @@ public class BeatGame : Game
         
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
+
+    private SoundEffect confirmSound;
+    private SoundEffectInstance confirmSoundInstance;
 
     public BeatGame()
     {
@@ -34,6 +38,8 @@ public class BeatGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        confirmSound = Content.Load<SoundEffect>("Confirm effect");
+        confirmSoundInstance = confirmSound.CreateInstance();
         
         contextManager.LoadContent();
     }
@@ -50,6 +56,8 @@ public class BeatGame : Game
     
     private void HandleMenuSelection(int selectedIndex)
     {
+        confirmSoundInstance.Stop();
+        confirmSoundInstance.Play();
         if (menuContext.GetNameOfCurrentMenu() == "Main Menu")
         {
             switch (selectedIndex)
