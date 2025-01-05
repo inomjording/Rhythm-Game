@@ -94,8 +94,14 @@ public class BeatGame : Game
                     contextManager.SetContext(danceContext);
                     contextManager.LoadContent();
                     break;
-
+                
                 case 2:
+                    danceContext = new DanceContext.DanceContext(Content, "7");
+                    contextManager.SetContext(danceContext);
+                    contextManager.LoadContent();
+                    break;
+
+                case 3:
                     menuContext.SwitchCurrentMenu("Main Menu");
                     break;
                 

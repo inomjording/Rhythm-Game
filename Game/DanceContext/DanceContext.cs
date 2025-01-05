@@ -78,13 +78,13 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
             { "DanceRightDown", content.Load<Texture2D>("DanceRightDown") },
             { "DanceUpDown", content.Load<Texture2D>("DanceUpDown") }
         };
-        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(463, Origin.Y));
-
         // Play the sound effect instance
         songInstance.Play();
 
         beatManager = new BeatManager(arrow);
         beatManager.LoadBeatsFromFile("DanceContext/SongTabs/" + selectedSong + ".txt");
+        
+        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(463, Origin.Y), beatManager.BeatInterval);
     }
 
     public void Update(GameTime gameTime)

@@ -15,7 +15,7 @@ public class BeatManager(Texture2D beatTexture)
     private readonly Queue<(Beat, float)> leftQueue = new();
     private readonly Queue<(Beat, float)> rightQueue = new();
 
-    private float beatInterval; // Time between beats (in seconds)
+    public float BeatInterval { get; private set; }
     private float speed;
 
     // Method to load beats from a text file
@@ -54,14 +54,14 @@ public class BeatManager(Texture2D beatTexture)
                 }
             }
 
-            currentTime += beatInterval; // Move to the next beat time
+            currentTime += BeatInterval; // Move to the next beat time
         }
     }
 
     private void LoadSpeedAndInterval(string dataString)
     {
         var split = dataString.Split(',');
-        beatInterval = 60f / float.Parse(split[0], CultureInfo.InvariantCulture) * 0.5f;
+        BeatInterval = 60f / float.Parse(split[0], CultureInfo.InvariantCulture) * 0.5f;
         speed = float.Parse(split[1], CultureInfo.CurrentCulture);
     }
 

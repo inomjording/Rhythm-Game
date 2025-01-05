@@ -8,10 +8,12 @@ namespace RhythmGame.CharacterSprite;
 public class DancingCharacter
 {
     private readonly AnimatedCharacter animatedCharacter;
+    private readonly float idleFrameInterval;
 
-    public DancingCharacter(Dictionary<string, Texture2D> animationTextures, Vector2 startPosition, float scale = 1f)
+    public DancingCharacter(Dictionary<string, Texture2D> animationTextures, Vector2 startPosition, float idleFrameInterval = 0.2f, float scale = 1f)
     {
         animatedCharacter = new AnimatedCharacter(animationTextures, 0.5f, startPosition, scale);
+        this.idleFrameInterval = idleFrameInterval;
 
         // Add animations for each spritesheet
         foreach (var animation in animationTextures)
@@ -81,7 +83,7 @@ public class DancingCharacter
         else
         {
             animatedCharacter.SetAnimation("Idle");
-            animatedCharacter.FrameInterval = 0.2f;
+            animatedCharacter.FrameInterval = idleFrameInterval;
         }
 
         animatedCharacter.Update(gameTime);
