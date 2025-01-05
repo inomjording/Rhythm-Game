@@ -26,7 +26,7 @@ public class Menu
     {
         this.font = font;
         this.position = position;
-        var selectSound1 = content.Load<SoundEffect>("Select effect");
+        var selectSound1 = content.Load<SoundEffect>("sound/sound-effects/Select effect");
         selectSoundInstance = selectSound1.CreateInstance();
         selectSoundInstance.IsLooped = false;
     }

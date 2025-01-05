@@ -13,36 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin 7.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:7.wav
-
-#begin active-arrow.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:active-arrow.png
-
-#begin arrow.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:arrow.png
-
 #begin bg.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -67,7 +37,7 @@
 /processorParam:TextureFormat=Color
 /build:bg2.png
 
-#begin character-back.png
+#begin character-sprites/arrows/active-arrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -77,9 +47,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:character-back.png;DanceUp.png
+/build:character-sprites/arrows/active-arrow.png
 
-#begin character-idle-dance.png
+#begin character-sprites/arrows/arrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -89,9 +59,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:character-idle-dance.png;Idle.png
+/build:character-sprites/arrows/arrow.png
 
-#begin character-left.png
+#begin character-sprites/arrows/full-arrow-export.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -101,9 +71,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:character-left.png;DanceRight.png
+/build:character-sprites/arrows/full-arrow-export.png;character-sprites/arrows/full-arrow.png
 
-#begin character-right.png
+#begin character-sprites/mc/character-back.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -113,9 +83,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:character-right.png;DanceLeft.png
+/build:character-sprites/mc/character-back.png;character-sprites/mc/DanceUp.png
 
-#begin character-split.png
+#begin character-sprites/mc/character-idle-dance.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -125,9 +95,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:character-split.png;DanceSplit.png
+/build:character-sprites/mc/character-idle-dance.png;character-sprites/mc/Idle.png
 
-#begin character-up.png
+#begin character-sprites/mc/character-left.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -137,15 +107,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:character-up.png;DanceDown.png
+/build:character-sprites/mc/character-left.png;character-sprites/mc/DanceRight.png
 
-#begin Confirm effect.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Confirm effect.wav
-
-#begin DanceLeftDown.png
+#begin character-sprites/mc/character-right.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -155,9 +119,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DanceLeftDown.png
+/build:character-sprites/mc/character-right.png;character-sprites/mc/DanceLeft.png
 
-#begin DanceLeftUp.png
+#begin character-sprites/mc/character-split.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -167,9 +131,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DanceLeftUp.png
+/build:character-sprites/mc/character-split.png;character-sprites/mc/DanceSplit.png
 
-#begin DanceRightDown.png
+#begin character-sprites/mc/character-up.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -179,9 +143,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DanceRightDown.png
+/build:character-sprites/mc/character-up.png;character-sprites/mc/DanceDown.png
 
-#begin DanceRightUp.png
+#begin character-sprites/mc/DanceLeftDown.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -191,9 +155,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DanceRightUp.png
+/build:character-sprites/mc/DanceLeftDown.png
 
-#begin DanceUpDown.png
+#begin character-sprites/mc/DanceLeftUp.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -203,7 +167,43 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:DanceUpDown.png
+/build:character-sprites/mc/DanceLeftUp.png
+
+#begin character-sprites/mc/DanceRightDown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:character-sprites/mc/DanceRightDown.png
+
+#begin character-sprites/mc/DanceRightUp.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:character-sprites/mc/DanceRightUp.png
+
+#begin character-sprites/mc/DanceUpDown.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:character-sprites/mc/DanceUpDown.png
 
 #begin font.spritefont
 /importer:FontDescriptionImporter
@@ -212,33 +212,33 @@
 /processorParam:TextureFormat=Compressed
 /build:font.spritefont
 
-#begin full-arrow-export.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:full-arrow-export.png;full-arrow.png
-
-#begin GET PUMPING!!!.wav
+#begin sound/songs/7.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:GET PUMPING!!!.wav
+/build:sound/songs/7.wav
 
-#begin Holy melancholy.wav
+#begin sound/songs/GET PUMPING!!!.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Holy melancholy.wav
+/build:sound/songs/GET PUMPING!!!.wav
 
-#begin Select effect.wav
+#begin sound/songs/Holy melancholy.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Select effect.wav
+/build:sound/songs/Holy melancholy.wav
+
+#begin sound/sound-effects/Confirm effect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/sound-effects/Confirm effect.wav
+
+#begin sound/sound-effects/Select effect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/sound-effects/Select effect.wav
 

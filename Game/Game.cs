@@ -18,6 +18,8 @@ public class BeatGame : Game
     private SoundEffect confirmSound;
     private SoundEffectInstance confirmSoundInstance;
 
+    private SpriteFont gameFont;
+
     public BeatGame()
     {
         graphics = new GraphicsDeviceManager(this);
@@ -27,7 +29,9 @@ public class BeatGame : Game
 
     protected override void Initialize()
     {
-        menuContext = new MenuContext.MenuContext(Content);
+        gameFont = Content.Load<SpriteFont>("font");
+        
+        menuContext = new MenuContext.MenuContext(Content, gameFont);
         menuContext.OnMenuItemSelected += HandleMenuSelection;
 
         contextManager = new ContextManager();
@@ -39,7 +43,7 @@ public class BeatGame : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        confirmSound = Content.Load<SoundEffect>("Confirm effect");
+        confirmSound = Content.Load<SoundEffect>("sound/sound-effects/Confirm effect");
         confirmSoundInstance = confirmSound.CreateInstance();
         
         contextManager.LoadContent();
@@ -68,8 +72,7 @@ public class BeatGame : Game
                     break;
                 
                 case 1:
-                    var font = Content.Load<SpriteFont>("font");
-                    var scoreContext = new ScoreScreenContext(font);
+                    var scoreContext = new ScoreScreenContext(gameFont);
                     contextManager.SetContext(scoreContext);
                     break;
 
@@ -84,19 +87,19 @@ public class BeatGame : Game
             switch (selectedIndex)
             {
                 case 0:
-                    danceContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!");
+                    danceContext = new DanceContext.DanceContext(Content, "GET PUMPING!!!", gameFont);
                     contextManager.SetContext(danceContext);
                     contextManager.LoadContent();
                     break;
                 
                 case 1:
-                    danceContext = new DanceContext.DanceContext(Content, "Holy melancholy");
+                    danceContext = new DanceContext.DanceContext(Content, "Holy melancholy", gameFont);
                     contextManager.SetContext(danceContext);
                     contextManager.LoadContent();
                     break;
                 
                 case 2:
-                    danceContext = new DanceContext.DanceContext(Content, "7");
+                    danceContext = new DanceContext.DanceContext(Content, "7", gameFont);
                     contextManager.SetContext(danceContext);
                     contextManager.LoadContent();
                     break;

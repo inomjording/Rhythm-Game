@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace RhythmGame.MenuContext;
 
-public class MenuContext(ContentManager content) : IGameContext
+public class MenuContext(ContentManager content, SpriteFont gameFont) : IGameContext
 {
     public event Action<int> OnMenuItemSelected;
     private Menu mainMenu;
@@ -17,15 +17,13 @@ public class MenuContext(ContentManager content) : IGameContext
     
     public void LoadContent()
     {
-        var font = content.Load<SpriteFont>("font"); // Add a SpriteFont to your Content folder
-        
-        mainMenu = new Menu(content, font, new Vector2(100, 100));
+        mainMenu = new Menu(content, gameFont, new Vector2(100, 100));
 
         mainMenu.AddMenuItem("Start Game");
         mainMenu.AddMenuItem("Options");
         mainMenu.AddMenuItem("Exit", Color.Red);
         
-        songMenu = new Menu(content, font, new Vector2(100, 100));
+        songMenu = new Menu(content, gameFont, new Vector2(100, 100));
         
         songMenu.AddMenuItem("GET PUMPING!!!");
         songMenu.AddMenuItem("Holy melancholy");

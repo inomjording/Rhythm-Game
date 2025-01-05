@@ -13,17 +13,15 @@ using RhythmGame.ScoreContext;
 
 namespace RhythmGame.DanceContext;
 
-public class DanceContext(ContentManager content, string selectedSong) : IGameContext
+public class DanceContext(ContentManager content, string selectedSong, SpriteFont gameFont) : IGameContext
 {
     private Texture2D arrowTexture;
     private Texture2D arrow;
-    private Vector2 arrowPosition = new(75, 0);
     private Texture2D background;
     private Color backgroundTint = Color.White;
     private KeyboardState oldState;
     private ScoreManager scoreManager;
-    SpriteFont font;
-    
+
     public static readonly Vector2 Origin = new(200, 240);
 
     // Create beat buttons for each direction
@@ -42,18 +40,18 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
 
     // Character
     private DancingCharacter dancingCharacter;
+    private const string CharacterSpriteFolder = "character-sprites/mc/";
 
     private readonly Stopwatch stopwatch = Stopwatch.StartNew();
 
     public void LoadContent()
     {
-        arrowTexture = content.Load<Texture2D>("active-arrow");
-        arrow = content.Load<Texture2D>("full-arrow");
+        arrowTexture = content.Load<Texture2D>("character-sprites/arrows/active-arrow");
+        arrow = content.Load<Texture2D>("character-sprites/arrows/full-arrow");
         background = content.Load<Texture2D>("bg2");
-        font = content.Load<SpriteFont>("font");
-        scoreManager = new ScoreManager(font);
+        scoreManager = new ScoreManager(gameFont);
 
-        song = content.Load<SoundEffect>(selectedSong);
+        song = content.Load<SoundEffect>("sound/songs/" + selectedSong);
         songInstance = song.CreateInstance();
         songInstance.IsLooped = false;
 
@@ -66,17 +64,17 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
         // Load character
         var animationTextures = new Dictionary<string, Texture2D>
         {
-            { "Idle", content.Load<Texture2D>("Idle") },
-            { "DanceUp", content.Load<Texture2D>("DanceUp") },
-            { "DanceDown", content.Load<Texture2D>("DanceDown") },
-            { "DanceLeft", content.Load<Texture2D>("DanceLeft") },
-            { "DanceRight", content.Load<Texture2D>("DanceRight") },
-            { "DanceSplit", content.Load<Texture2D>("DanceSplit") },
-            { "DanceLeftUp", content.Load<Texture2D>("DanceLeftUp") },
-            { "DanceLeftDown", content.Load<Texture2D>("DanceLeftDown") },
-            { "DanceRightUp", content.Load<Texture2D>("DanceRightUp") },
-            { "DanceRightDown", content.Load<Texture2D>("DanceRightDown") },
-            { "DanceUpDown", content.Load<Texture2D>("DanceUpDown") }
+            { "Idle", content.Load<Texture2D>(CharacterSpriteFolder + "Idle") },
+            { "DanceUp", content.Load<Texture2D>(CharacterSpriteFolder + "DanceUp") },
+            { "DanceDown", content.Load<Texture2D>(CharacterSpriteFolder + "DanceDown") },
+            { "DanceLeft", content.Load<Texture2D>(CharacterSpriteFolder + "DanceLeft") },
+            { "DanceRight", content.Load<Texture2D>(CharacterSpriteFolder + "DanceRight") },
+            { "DanceSplit", content.Load<Texture2D>(CharacterSpriteFolder + "DanceSplit") },
+            { "DanceLeftUp", content.Load<Texture2D>(CharacterSpriteFolder + "DanceLeftUp") },
+            { "DanceLeftDown", content.Load<Texture2D>(CharacterSpriteFolder + "DanceLeftDown") },
+            { "DanceRightUp", content.Load<Texture2D>(CharacterSpriteFolder + "DanceRightUp") },
+            { "DanceRightDown", content.Load<Texture2D>(CharacterSpriteFolder + "DanceRightDown") },
+            { "DanceUpDown", content.Load<Texture2D>(CharacterSpriteFolder + "DanceUpDown") }
         };
         // Play the sound effect instance
         songInstance.Play();
