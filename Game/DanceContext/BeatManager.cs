@@ -61,7 +61,7 @@ public class BeatManager(Texture2D beatTexture)
     private void LoadSpeedAndInterval(string dataString)
     {
         var split = dataString.Split(',');
-        beatInterval = float.Parse(split[0], CultureInfo.InvariantCulture) * 0.5f;
+        beatInterval = 60f / float.Parse(split[0], CultureInfo.InvariantCulture) * 0.5f;
         speed = float.Parse(split[1], CultureInfo.CurrentCulture);
     }
 

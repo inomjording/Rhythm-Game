@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RhythmGame.ScoreContext;
 
 namespace RhythmGame;
 
@@ -67,7 +68,9 @@ public class BeatGame : Game
                     break;
                 
                 case 1:
-                    // Open options (create and manage an OptionsContext if needed)
+                    var font = Content.Load<SpriteFont>("font");
+                    var scoreContext = new ScoreScreenContext(font);
+                    contextManager.SetContext(scoreContext);
                     break;
 
                 case 2:
@@ -85,8 +88,14 @@ public class BeatGame : Game
                     contextManager.SetContext(danceContext);
                     contextManager.LoadContent();
                     break;
-
+                
                 case 1:
+                    danceContext = new DanceContext.DanceContext(Content, "Holy melancholy");
+                    contextManager.SetContext(danceContext);
+                    contextManager.LoadContent();
+                    break;
+
+                case 2:
                     menuContext.SwitchCurrentMenu("Main Menu");
                     break;
                 

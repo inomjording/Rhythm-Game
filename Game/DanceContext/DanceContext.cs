@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using RhythmGame.CharacterSprite;
 using RhythmGame.DanceContext.BeatButtons;
 using RhythmGame.DanceContext.Beats;
+using RhythmGame.ScoreContext;
 
 namespace RhythmGame.DanceContext;
 
@@ -135,4 +136,17 @@ public class DanceContext(ContentManager content, string selectedSong) : IGameCo
         
         dancingCharacter.Draw(spriteBatch);
     }
+    
+    private void EndGame(int finalScore)
+    {
+        var newScore = new Score
+        {
+            PlayerName = "Player", // Replace with player input or default name
+            Points = finalScore,
+            Date = DateTime.Now
+        };
+
+        ScoreScreenManager.AddScore(newScore);
+    }
+
 }

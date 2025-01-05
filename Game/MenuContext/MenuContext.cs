@@ -28,6 +28,7 @@ public class MenuContext(ContentManager content) : IGameContext
         songMenu = new Menu(content, font, new Vector2(100, 100));
         
         songMenu.AddMenuItem("GET PUMPING!!!");
+        songMenu.AddMenuItem("Holy melancholy");
         songMenu.AddMenuItem("Back", Color.Red);
         
         currentMenu = mainMenu;

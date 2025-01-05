@@ -230,6 +230,12 @@
 /processorParam:Quality=Best
 /build:GET PUMPING!!!.wav
 
+#begin Holy melancholy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Holy melancholy.wav
+
 #begin Select effect.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
