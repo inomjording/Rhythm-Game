@@ -7,18 +7,18 @@ namespace RhythmGame.MenuContext.Menus;
 
 public class SongInfoMenu : Menu
 {
-    public SongInfoMenu(ContentManager content, SpriteFont font, Vector2 position, ContextManager contextManager,
-        MenuContext menuContext, string selectedSong) : base(content, font, position)
+    public SongInfoMenu(ContentManager content, SpriteFont font, SpriteFont smallerFont, Vector2 position, ContextManager contextManager,
+        MenuContext menuContext, string selectedSong) : base(content, font, smallerFont, position)
     {
         AddMenuItem("Start", () =>
         {
-            var danceContext = new DanceContext.DanceContext(content, selectedSong, font, contextManager);
+            var danceContext = new DanceContext.DanceContext(content, selectedSong, font, smallerFont, contextManager);
             contextManager.SetContext(danceContext);
             contextManager.LoadContent();
         });
         AddMenuItem("Score", () => 
         {
-            var scoreContext = new ScoreScreenContext(font, selectedSong);
+            var scoreContext = new ScoreScreenContext(content, font, smallerFont, selectedSong);
             contextManager.SetContext(scoreContext);
         });
         AddMenuItem("Back", () => menuContext.SwitchCurrentMenu("Song Menu"), Color.Red);

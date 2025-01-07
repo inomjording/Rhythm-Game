@@ -11,7 +11,7 @@ public class SongMenu : Menu
 {
     private readonly MenuFactory factory;
     private readonly MenuContext menuContext;
-    public SongMenu(ContentManager content, SpriteFont font, Vector2 position, MenuFactory factory, MenuContext menuContext) : base(content, font, position)
+    public SongMenu(ContentManager content, SpriteFont font, SpriteFont smallerFont, Vector2 position, MenuFactory factory, MenuContext menuContext) : base(content, font, smallerFont, position)
     {
         this.factory = factory;
         this.menuContext = menuContext;

@@ -13,7 +13,12 @@ using RhythmGame.ScoreContext;
 
 namespace RhythmGame.DanceContext;
 
-public class DanceContext(ContentManager content, string selectedSong, SpriteFont gameFont, ContextManager contextManager) : IGameContext
+public class DanceContext(
+    ContentManager content,
+    string selectedSong,
+    SpriteFont gameFont,
+    SpriteFont smallerFont,
+    ContextManager contextManager) : IGameContext
 {
     private Texture2D arrowTexture;
     private Texture2D arrow;
@@ -51,7 +56,7 @@ public class DanceContext(ContentManager content, string selectedSong, SpriteFon
         arrowTexture = content.Load<Texture2D>("character-sprites/arrows/active-arrow");
         arrow = content.Load<Texture2D>("character-sprites/arrows/full-arrow");
         background = content.Load<Texture2D>("bg2");
-        scoreManager = new ScoreManager(gameFont);
+        scoreManager = new ScoreManager(gameFont, smallerFont);
 
         song = content.Load<SoundEffect>("sound/songs/" + selectedSong);
         songInstance = song.CreateInstance();
@@ -149,13 +154,15 @@ public class DanceContext(ContentManager content, string selectedSong, SpriteFon
         songInstance.Stop();
         var newScore = new Score
         {
-            PlayerName = "Player", // Replace with player input or default name
+            PlayerName = "",
             Points = finalScore,
             Date = DateTime.Now
         };
-
-        ScoreScreenManager.AddScore(newScore, selectedSong);
-        var scoreContext = new ScoreScreenContext(gameFont, selectedSong);
+        
+        var scoreContext = new ScoreScreenContext(content, gameFont, smallerFont, selectedSong)
+        {
+            NewScore = newScore
+        };
         contextManager.SetContext(scoreContext);
     }
 

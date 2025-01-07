@@ -71,7 +71,7 @@ public class BeatButton
     protected float CollisionMeasureY(Beat beat)
     {
         var boundingBox = beat.GetBoundingBox();
-        var distance = decimal.Abs(boundingBox.Center.Y - TargetArea.Center.Y); // What's the difference between decimal etc.
+        var distance = decimal.Abs(boundingBox.Center.Y - TargetArea.Center.Y); 
         return (float)(2 * distance / TargetArea.Height);
     }
 }

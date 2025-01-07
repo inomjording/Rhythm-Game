@@ -11,6 +11,7 @@ namespace RhythmGame.MenuContext.Menus;
 public class Menu
 {
     private readonly SpriteFont font;
+    private readonly SpriteFont smallerFont;
     private readonly Vector2 position;
     
     private readonly List<MenuItem> menuItems = [];
@@ -23,12 +24,13 @@ public class Menu
 
     private readonly SoundEffectInstance selectSoundInstance;
 
-    protected Menu(ContentManager content, SpriteFont font, Vector2 position)
+    protected Menu(ContentManager content, SpriteFont font, SpriteFont smallerFont, Vector2 position)
     {
         this.font = font;
+        this.smallerFont = smallerFont;
         this.position = position;
-        var selectSound1 = content.Load<SoundEffect>("sound/sound-effects/Select effect");
-        selectSoundInstance = selectSound1.CreateInstance();
+        var selectSound = content.Load<SoundEffect>("sound/sound-effects/Select effect");
+        selectSoundInstance = selectSound.CreateInstance();
         selectSoundInstance.IsLooped = false;
     }
 
@@ -89,7 +91,7 @@ public class Menu
         }
         
         var description = menuItems[selectedIndex].Description ?? "";
-        spriteBatch.DrawString(font, description, new Vector2(400, 200), Color.Gray);
+        spriteBatch.DrawString(smallerFont, description, new Vector2(400, 200), Color.Gray);
     }
 
     public int GetSelectedIndex()

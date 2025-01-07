@@ -14,16 +14,17 @@ public class ScoreManager
     private static readonly Vector2 HitTextPosition = new(280, 150);
     private List<float> hitQueue;
     private readonly SpriteFont font;
+    private readonly SpriteFont smallerFont;
     private int chain;
     internal int Multiplier = 1;
     
 
-    public ScoreManager(SpriteFont font)
+    public ScoreManager(SpriteFont font, SpriteFont smallerFont)
     {
         hitQueue = [];
         currentHitText = new HitText(HitTextPosition, "");
         this.font = font;
-        
+        this.smallerFont = smallerFont;
         
         var scoreTextPosition = new Vector2(420, 120);
         scoreText = new HitText(scoreTextPosition, Score.ToString());
@@ -44,7 +45,7 @@ public class ScoreManager
             case < 0.5f:
                 IncreaseChain();
                 return Multiplier * 3;
-            case < 0.95f:
+            case < 1f:
                 IncreaseChain();
                 return Multiplier * 1;
             default:
@@ -71,7 +72,7 @@ public class ScoreManager
         {
             < 0.25f => new PerfectHitText(HitTextPosition),
             < 0.5f => new GoodHitText(HitTextPosition),
-            < 0.95f => new OkHitText(HitTextPosition),
+            < 1f => new OkHitText(HitTextPosition),
             _ => new MissHitText(HitTextPosition)
         };
     }
@@ -90,8 +91,13 @@ public class ScoreManager
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.DrawString(font, currentHitText.Text, currentHitText.Position, currentHitText.Color);
+        spriteBatch.DrawString(smallerFont, currentHitText.Text, currentHitText.Position, currentHitText.Color);
         spriteBatch.DrawString(font, scoreText.Text, scoreText.Position, scoreText.Color);
-        spriteBatch.DrawString(font, "x" + Multiplier, HitTextPosition + new Vector2(0, font.LineSpacing), Color.Gray);
+        spriteBatch.DrawString(smallerFont,
+            "x" + Multiplier,
+            HitTextPosition +
+            new Vector2(0,
+                font.LineSpacing),
+            Color.Gray);
     }
 }

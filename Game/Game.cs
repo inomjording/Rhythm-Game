@@ -18,6 +18,7 @@ public class BeatGame : Game
     private SoundEffectInstance confirmSoundInstance;
 
     private SpriteFont gameFont;
+    private SpriteFont smallerFont;
 
     public BeatGame()
     {
@@ -29,10 +30,11 @@ public class BeatGame : Game
     protected override void Initialize()
     {
         gameFont = Content.Load<SpriteFont>("font");
+        smallerFont = Content.Load<SpriteFont>("smaller font");
         
         contextManager = new ContextManager();
 
-        menuContext = new MenuContext.MenuContext(Content, gameFont, contextManager, Exit);
+        menuContext = new MenuContext.MenuContext(Content, gameFont, smallerFont, contextManager, Exit);
         menuContext.OnMenuItemSelected += HandleMenuSelection;
 
         contextManager.SetContext(menuContext);

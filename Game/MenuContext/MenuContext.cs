@@ -7,7 +7,7 @@ using RhythmGame.MenuContext.Menus;
 
 namespace RhythmGame.MenuContext;
 
-public class MenuContext(ContentManager content, SpriteFont gameFont, ContextManager contextManager, Action exit) : IGameContext
+public class MenuContext(ContentManager content, SpriteFont gameFont, SpriteFont smallerFont, ContextManager contextManager, Action exit) : IGameContext
 {
     public event Action<int> OnMenuItemSelected;
     private Menu mainMenu;
@@ -22,7 +22,7 @@ public class MenuContext(ContentManager content, SpriteFont gameFont, ContextMan
 
     public void LoadContent()
     {
-        factory = new MenuFactory(content, gameFont, new Vector2(100, 100), contextManager, this, exit);
+        factory = new MenuFactory(content, gameFont, smallerFont, new Vector2(100, 100), contextManager, this, exit);
 
         mainMenu = factory.CreateMainMenu();
         songMenu = factory.CreateSongMenu();

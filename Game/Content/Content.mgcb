@@ -212,6 +212,13 @@
 /processorParam:TextureFormat=Compressed
 /build:font.spritefont
 
+#begin smaller font.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:smaller font.spritefont
+
 #begin sound/songs/7.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
