@@ -26,4 +26,9 @@ public class ContextManager
     {
         currentContext?.Draw(gameTime, spriteBatch);
     }
+
+    public bool IsReturnToMenuContext()
+    {
+        return currentContext.ReturnToMainMenu;
+    }
 }

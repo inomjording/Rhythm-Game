@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RhythmGame.BeatButtons;
 using RhythmGame.DanceContext.Beats;
 
 namespace RhythmGame.DanceContext.BeatButtons;

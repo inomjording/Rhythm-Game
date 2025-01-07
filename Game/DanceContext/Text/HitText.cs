@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace RhythmGame.Text;
+namespace RhythmGame.DanceContext.Text;
 
 public class HitText(Vector2 position, string text)
 {
@@ -8,7 +8,7 @@ public class HitText(Vector2 position, string text)
     public string Text = text;
     public Color Color = Color.White;
 
-    public HitText(Vector2 position, string text, Color color) : this(position, text)
+    protected HitText(Vector2 position, string text, Color color) : this(position, text)
     {
         Color = color;
     }

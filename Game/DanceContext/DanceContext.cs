@@ -13,7 +13,7 @@ using RhythmGame.ScoreContext;
 
 namespace RhythmGame.DanceContext;
 
-public class DanceContext(ContentManager content, string selectedSong, SpriteFont gameFont) : IGameContext
+public class DanceContext(ContentManager content, string selectedSong, SpriteFont gameFont, ContextManager contextManager) : IGameContext
 {
     private Texture2D arrowTexture;
     private Texture2D arrow;
@@ -43,6 +43,8 @@ public class DanceContext(ContentManager content, string selectedSong, SpriteFon
     private const string CharacterSpriteFolder = "character-sprites/mc/";
 
     private readonly Stopwatch stopwatch = Stopwatch.StartNew();
+
+    public bool ReturnToMainMenu { get; set; }
 
     public void LoadContent()
     {
@@ -87,6 +89,13 @@ public class DanceContext(ContentManager content, string selectedSong, SpriteFon
 
     public void Update(GameTime gameTime)
     {
+        // TODO: Change end game to time instead
+        if (activeBeats.Count == 0 && beatManager.GetQueueCount() == 0)
+        {
+            EndGame(scoreManager.Score);
+            return;
+        }
+
         var keyboardState = Keyboard.GetState();
 
         var elapsedTime = (float)stopwatch.Elapsed.TotalSeconds;
@@ -137,6 +146,7 @@ public class DanceContext(ContentManager content, string selectedSong, SpriteFon
     
     private void EndGame(int finalScore)
     {
+        songInstance.Stop();
         var newScore = new Score
         {
             PlayerName = "Player", // Replace with player input or default name
@@ -145,6 +155,8 @@ public class DanceContext(ContentManager content, string selectedSong, SpriteFon
         };
 
         ScoreScreenManager.AddScore(newScore, selectedSong);
+        var scoreContext = new ScoreScreenContext(gameFont, selectedSong);
+        contextManager.SetContext(scoreContext);
     }
 
 }

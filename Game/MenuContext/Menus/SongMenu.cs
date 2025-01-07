@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.IO;
+using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -25,6 +28,21 @@ public class SongMenu : Menu
             var songInfoMenu = factory.CreateSongInfoMenu(songName);
             menuContext.SongInfoMenu = songInfoMenu;
             menuContext.SwitchCurrentMenu("Song Info Menu");
-        });
+        }, LoadSongDescription(songName));
+    }
+
+    private static string LoadSongDescription(string songName)
+    {
+        var fileLocation = "DanceContext/SongTabs/" + songName + ".txt";
+        try
+        {
+            var metadata = File.ReadLines(fileLocation).First().Split(',');
+            return $"Difficulty: {metadata[2]}\nBPM: {metadata[0]}";
+        }
+        catch (Exception e)
+        {
+            // TODO: Add logs
+            return "";
+        }
     }
 }

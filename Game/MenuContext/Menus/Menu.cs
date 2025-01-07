@@ -23,7 +23,7 @@ public class Menu
 
     private readonly SoundEffectInstance selectSoundInstance;
 
-    public Menu(ContentManager content, SpriteFont font, Vector2 position)
+    protected Menu(ContentManager content, SpriteFont font, Vector2 position)
     {
         this.font = font;
         this.position = position;
@@ -32,14 +32,19 @@ public class Menu
         selectSoundInstance.IsLooped = false;
     }
 
-    public void AddMenuItem(string text, Action action)
+    protected void AddMenuItem(string text, Action action)
     {
         menuItems.Add(new MenuItem(text, action));
     }
 
-    public void AddMenuItem(string text, Action action, Color selectedColor)
+    protected void AddMenuItem(string text, Action action, Color selectedColor)
     {
         menuItems.Add(new MenuItem(text, action, selectedColor));
+    }
+
+    protected void AddMenuItem(string text, Action action, string description)
+    {
+        menuItems.Add(new MenuItem(text, action, description));
     }
 
     public void Update(GameTime gameTime, KeyboardState keyboardState)
@@ -82,6 +87,9 @@ public class Menu
 
             currentPosition.Y += font.LineSpacing; // Move down to draw the next item
         }
+        
+        var description = menuItems[selectedIndex].Description ?? "";
+        spriteBatch.DrawString(font, description, new Vector2(400, 200), Color.Gray);
     }
 
     public int GetSelectedIndex()

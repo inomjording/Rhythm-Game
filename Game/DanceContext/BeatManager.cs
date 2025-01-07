@@ -105,4 +105,6 @@ public class BeatManager(Texture2D beatTexture)
             beat.Draw(spriteBatch);
         }
     }
+    
+    public int GetQueueCount() => upQueue.Count + downQueue.Count + leftQueue.Count + rightQueue.Count;
 }

@@ -2,12 +2,14 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace RhythmGame.ScoreContext;
 
 public class ScoreScreenContext(SpriteFont font, string selectedSong) : IGameContext
 {
     private readonly List<Score> scores = ScoreScreenManager.LoadScores()[selectedSong];
+    public bool ReturnToMainMenu { get; set; }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
@@ -21,7 +23,7 @@ public class ScoreScreenContext(SpriteFont font, string selectedSong) : IGameCon
             yPosition += 30;
         }
 
-        spriteBatch.DrawString(font, "Press ESC to EXIT.\nGoing back is not implemented.\nYou are stuck here.", new Vector2(100, yPosition + 20), Color.Gray);
+        spriteBatch.DrawString(font, "Press BACKSPACE to return.", new Vector2(100, yPosition + 20), Color.Gray);
     }
 
     private static string FormatScoreString(string playerName, int score)
@@ -29,7 +31,7 @@ public class ScoreScreenContext(SpriteFont font, string selectedSong) : IGameCon
         var numberOfDots = 45 - playerName.Length - score.ToString().Length;
         return playerName + new string('.', numberOfDots) + score;
     }
-
+    
     public void LoadContent()
     {
         
@@ -37,5 +39,9 @@ public class ScoreScreenContext(SpriteFont font, string selectedSong) : IGameCon
 
     public void Update(GameTime gameTime)
     {
+        if (Keyboard.GetState().IsKeyDown(Keys.Back))
+        {
+            ReturnToMainMenu = true;
+        }
     }
 }

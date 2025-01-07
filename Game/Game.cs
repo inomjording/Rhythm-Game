@@ -10,8 +10,7 @@ public class BeatGame : Game
 {
     private ContextManager contextManager;
     private MenuContext.MenuContext menuContext;
-    private DanceContext.DanceContext danceContext;
-        
+
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
 
@@ -19,8 +18,6 @@ public class BeatGame : Game
     private SoundEffectInstance confirmSoundInstance;
 
     private SpriteFont gameFont;
-
-    private string selectedSong;
 
     public BeatGame()
     {
@@ -57,6 +54,8 @@ public class BeatGame : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        if (contextManager.IsReturnToMenuContext()) contextManager.SetContext(menuContext);
+        
         contextManager.Update(gameTime);
 
         base.Update(gameTime);

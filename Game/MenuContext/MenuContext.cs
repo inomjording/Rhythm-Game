@@ -17,14 +17,15 @@ public class MenuContext(ContentManager content, SpriteFont gameFont, ContextMan
     private MenuFactory factory;
 
     private KeyboardState oldKeyboardState;
-    
+
+    public bool ReturnToMainMenu { get; set; } = false;
+
     public void LoadContent()
     {
         factory = new MenuFactory(content, gameFont, new Vector2(100, 100), contextManager, this, exit);
 
         mainMenu = factory.CreateMainMenu();
-        songMenu = new SongMenu(content, gameFont, new Vector2(100, 100), factory, this);
-        
+        songMenu = factory.CreateSongMenu();
         currentMenu = mainMenu;
 
     }

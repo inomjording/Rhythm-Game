@@ -2,13 +2,13 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RhythmGame.Text;
+using RhythmGame.DanceContext.Text;
 
 namespace RhythmGame.DanceContext;
 
 public class ScoreManager
 {
-    private int score;
+    public int Score;
     private readonly HitText scoreText;
     private HitText currentHitText;
     private static readonly Vector2 HitTextPosition = new(280, 150);
@@ -26,7 +26,7 @@ public class ScoreManager
         
         
         var scoreTextPosition = new Vector2(420, 120);
-        scoreText = new HitText(scoreTextPosition, score.ToString());
+        scoreText = new HitText(scoreTextPosition, Score.ToString());
     }
 
     public void QueueHit(float hit)
@@ -80,9 +80,9 @@ public class ScoreManager
     {
         foreach (var hit in hitQueue.Where(hit => hit != 0f))
         {
-            score += CalculateScoreFromHit(hit);
+            Score += CalculateScoreFromHit(hit);
             currentHitText = GetTextFromHit(hit);
-            scoreText.Text = score.ToString();
+            scoreText.Text = Score.ToString();
         }
 
         hitQueue = [];
@@ -92,5 +92,6 @@ public class ScoreManager
     {
         spriteBatch.DrawString(font, currentHitText.Text, currentHitText.Position, currentHitText.Color);
         spriteBatch.DrawString(font, scoreText.Text, scoreText.Position, scoreText.Color);
+        spriteBatch.DrawString(font, "x" + Multiplier, HitTextPosition + new Vector2(0, font.LineSpacing), Color.Gray);
     }
 }
