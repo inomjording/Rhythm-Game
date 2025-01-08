@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RhythmGame.Collections;
 using RhythmGame.DanceContext.Text;
 
 namespace RhythmGame.DanceContext;
@@ -19,12 +20,12 @@ public class ScoreManager
     internal int Multiplier = 1;
     
 
-    public ScoreManager(SpriteFont font, SpriteFont smallerFont)
+    public ScoreManager(FontCollection fonts)
     {
         hitQueue = [];
         currentHitText = new HitText(HitTextPosition, "");
-        this.font = font;
-        this.smallerFont = smallerFont;
+        font = fonts.GameFont;
+        smallerFont = fonts.SmallerFont;
         
         var scoreTextPosition = new Vector2(420, 120);
         scoreText = new HitText(scoreTextPosition, Score.ToString());

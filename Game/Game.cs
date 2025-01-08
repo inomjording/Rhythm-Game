@@ -2,7 +2,8 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RhythmGame.ScoreContext;
+using RhythmGame.Collections;
+using RhythmGame.OptionsContext;
 
 namespace RhythmGame;
 
@@ -14,11 +15,11 @@ public class BeatGame : Game
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
 
-    private SoundEffect confirmSound;
-    private SoundEffectInstance confirmSoundInstance;
+    private SoundEffectCollection soundEffects;
 
-    private SpriteFont gameFont;
-    private SpriteFont smallerFont;
+    private FontCollection fonts;
+    
+    private UserSettings userSettings;
 
     public BeatGame()
     {
@@ -29,12 +30,20 @@ public class BeatGame : Game
 
     protected override void Initialize()
     {
-        gameFont = Content.Load<SpriteFont>("font");
-        smallerFont = Content.Load<SpriteFont>("smaller font");
+        userSettings = SettingsManager.LoadSettings();
+        SoundEffect.MasterVolume = 0.5f;
+        
+        var confirmSound = Content.Load<SoundEffect>("sound/sound-effects/Confirm effect");
+        var selectSound = Content.Load<SoundEffect>("sound/sound-effects/Select effect");
+        soundEffects = new SoundEffectCollection(confirmSound, selectSound);
+        
+        var gameFont = Content.Load<SpriteFont>("font");
+        var smallerFont = Content.Load<SpriteFont>("smaller font");
+        fonts = new FontCollection(gameFont, smallerFont);
         
         contextManager = new ContextManager();
 
-        menuContext = new MenuContext.MenuContext(Content, gameFont, smallerFont, contextManager, Exit);
+        menuContext = new MenuContext.MenuContext(Content, GraphicsDevice, soundEffects, fonts, contextManager, Exit);
         menuContext.OnMenuItemSelected += HandleMenuSelection;
 
         contextManager.SetContext(menuContext);
@@ -44,9 +53,6 @@ public class BeatGame : Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-
-        confirmSound = Content.Load<SoundEffect>("sound/sound-effects/Confirm effect");
-        confirmSoundInstance = confirmSound.CreateInstance();
         
         contextManager.LoadContent();
     }
@@ -65,8 +71,7 @@ public class BeatGame : Game
     
     private void HandleMenuSelection(int selectedIndex)
     {
-        confirmSoundInstance.Stop();
-        confirmSoundInstance.Play();
+        soundEffects.PlayConfirmSound();
         menuContext.InvokeSelectedMenuItem(selectedIndex);
     }
 

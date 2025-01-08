@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using RhythmGame.Collections;
 
 namespace RhythmGame.MenuContext.Menus;
 
@@ -11,7 +12,13 @@ public class SongMenu : Menu
 {
     private readonly MenuFactory factory;
     private readonly MenuContext menuContext;
-    public SongMenu(ContentManager content, SpriteFont font, SpriteFont smallerFont, Vector2 position, MenuFactory factory, MenuContext menuContext) : base(content, font, smallerFont, position)
+    public SongMenu(SoundEffectCollection soundEffects,
+        FontCollection fonts,
+        Vector2 position,
+        MenuFactory factory,
+        MenuContext menuContext) : base(soundEffects,
+        fonts,
+        position)
     {
         this.factory = factory;
         this.menuContext = menuContext;

@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RhythmGame.Collections;
 
 namespace RhythmGame.MenuContext.Menus;
 
-public class Menu
+public class Menu(SoundEffectCollection soundEffects, FontCollection fonts, Vector2 position)
 {
-    private readonly SpriteFont font;
-    private readonly SpriteFont smallerFont;
-    private readonly Vector2 position;
-    
     private readonly List<MenuItem> menuItems = [];
     private int selectedIndex;
 
@@ -21,18 +16,6 @@ public class Menu
     private const double InputCooldown = 0.2; // Prevent spamming input
 
     private readonly Color normalColor = Color.White;
-
-    private readonly SoundEffectInstance selectSoundInstance;
-
-    protected Menu(ContentManager content, SpriteFont font, SpriteFont smallerFont, Vector2 position)
-    {
-        this.font = font;
-        this.smallerFont = smallerFont;
-        this.position = position;
-        var selectSound = content.Load<SoundEffect>("sound/sound-effects/Select effect");
-        selectSoundInstance = selectSound.CreateInstance();
-        selectSoundInstance.IsLooped = false;
-    }
 
     protected void AddMenuItem(string text, Action action)
     {
@@ -59,15 +42,13 @@ public class Menu
             {
                 selectedIndex = (selectedIndex - 1 + menuItems.Count) % menuItems.Count;
                 timeSinceLastInput = 0;
-                selectSoundInstance.Stop();
-                selectSoundInstance.Play();
+                soundEffects.PlaySelectSound();
             }
             else if (keyboardState.IsKeyDown(Keys.Down))
             {
                 selectedIndex = (selectedIndex + 1) % menuItems.Count;
                 timeSinceLastInput = 0;
-                selectSoundInstance.Stop();
-                selectSoundInstance.Play();
+                soundEffects.PlaySelectSound();
             }
         }
 
@@ -85,13 +66,13 @@ public class Menu
         foreach (var menuItem in menuItems)
         {
             var color = menuItem.IsSelected ? menuItem.SelectedColor : normalColor;
-            spriteBatch.DrawString(font, menuItem.Text, currentPosition, color);
+            spriteBatch.DrawString(fonts.GameFont, menuItem.Text, currentPosition, color);
 
-            currentPosition.Y += font.LineSpacing; // Move down to draw the next item
+            currentPosition.Y += fonts.GameFont.LineSpacing; // Move down to draw the next item
         }
         
         var description = menuItems[selectedIndex].Description ?? "";
-        spriteBatch.DrawString(smallerFont, description, new Vector2(400, 200), Color.Gray);
+        spriteBatch.DrawString(fonts.SmallerFont, description, new Vector2(400, 200), Color.Gray);
     }
 
     public int GetSelectedIndex()

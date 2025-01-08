@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 public static class ScoreScreenManager
 {
-    private const string ScoreFilePath = "scores.json";
+    private const string ScoreFilePath = "UserData/scores.json";
 
     public static Dictionary<string, List<Score>> LoadScores()
     {

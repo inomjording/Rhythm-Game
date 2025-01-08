@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RhythmGame.CharacterSprite;
+using RhythmGame.Collections;
 using RhythmGame.DanceContext.BeatButtons;
 using RhythmGame.DanceContext.Beats;
 using RhythmGame.ScoreContext;
@@ -15,9 +16,9 @@ namespace RhythmGame.DanceContext;
 
 public class DanceContext(
     ContentManager content,
+    SoundEffectCollection soundEffects,
     string selectedSong,
-    SpriteFont gameFont,
-    SpriteFont smallerFont,
+    FontCollection fonts,
     ContextManager contextManager) : IGameContext
 {
     private Texture2D arrowTexture;
@@ -56,7 +57,7 @@ public class DanceContext(
         arrowTexture = content.Load<Texture2D>("character-sprites/arrows/active-arrow");
         arrow = content.Load<Texture2D>("character-sprites/arrows/full-arrow");
         background = content.Load<Texture2D>("bg2");
-        scoreManager = new ScoreManager(gameFont, smallerFont);
+        scoreManager = new ScoreManager(fonts);
 
         song = content.Load<SoundEffect>("sound/songs/" + selectedSong);
         songInstance = song.CreateInstance();
@@ -159,7 +160,7 @@ public class DanceContext(
             Date = DateTime.Now
         };
         
-        var scoreContext = new ScoreScreenContext(content, gameFont, smallerFont, selectedSong)
+        var scoreContext = new ScoreScreenContext(soundEffects, fonts, selectedSong)
         {
             NewScore = newScore
         };

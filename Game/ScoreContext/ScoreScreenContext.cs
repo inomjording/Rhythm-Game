@@ -1,28 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RhythmGame.Collections;
 using RhythmGame.Utils;
 
 namespace RhythmGame.ScoreContext;
 
-public class ScoreScreenContext(ContentManager content, SpriteFont font, SpriteFont smallerFont, string selectedSong) : IGameContext
+public class ScoreScreenContext(
+    SoundEffectCollection soundEffects,
+    FontCollection fonts,
+    string selectedSong) : IGameContext
 {
-    private readonly List<Score> scores = ScoreScreenManager.LoadScores()[selectedSong];
+    private List<Score> scores = ScoreScreenManager.LoadScores()[selectedSong];
     public bool ReturnToMainMenu { get; set; }
     public Score NewScore;
-    
-    private KeyboardState lastKeyboardState;
-    private Keys lastPressedKey;
-    private double timeSinceLastInput;
-    private const double InputCooldown = 0.2;
-    
-    private readonly SoundEffectInstance selectSoundInstance = content.Load<SoundEffect>("sound/sound-effects/Select effect").CreateInstance();
-    private readonly SoundEffectInstance confirmSoundInstance = content.Load<SoundEffect>("sound/sound-effects/Confirm effect").CreateInstance();
 
+    private Keys lastPressedKey;
+    
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         if (NewScore == null)
@@ -37,24 +33,24 @@ public class ScoreScreenContext(ContentManager content, SpriteFont font, SpriteF
 
     private void DrawScores(SpriteBatch spriteBatch)
     {
-        spriteBatch.DrawString(font, selectedSong, new Vector2(100, 50), Color.White);
+        spriteBatch.DrawString(fonts.GameFont, selectedSong, new Vector2(100, 50), Color.White);
 
         // Display top scores
         var yPosition = 100;
         foreach (var scoreText in scores.Select(score => FormatScoreString(score.PlayerName, score.Points)))
         {
-            spriteBatch.DrawString(smallerFont, scoreText, new Vector2(100, yPosition), Color.White);
+            spriteBatch.DrawString(fonts.SmallerFont, scoreText, new Vector2(100, yPosition), Color.White);
             yPosition += 30;
         }
 
-        spriteBatch.DrawString(smallerFont, "Press BACKSPACE to return.", new Vector2(100, yPosition + 20), Color.Gray);
+        spriteBatch.DrawString(fonts.SmallerFont, "Press BACKSPACE to return.", new Vector2(100, yPosition + 20), Color.Gray);
     }
 
     private void DrawEnterName(SpriteBatch spriteBatch)
     {
-        spriteBatch.DrawString(font, "Enter Your Name:", new Vector2(100, 50), Color.White);
-        spriteBatch.DrawString(smallerFont, NewScore.PlayerName + "~", new Vector2(100, 80), Color.White);
-        spriteBatch.DrawString(font, "Confirm", new Vector2(100, 130), Color.Yellow);
+        spriteBatch.DrawString(fonts.GameFont, "Enter Your Name:", new Vector2(100, 50), Color.White);
+        spriteBatch.DrawString(fonts.SmallerFont, NewScore.PlayerName + "~", new Vector2(100, 80), Color.White);
+        spriteBatch.DrawString(fonts.GameFont, "Confirm", new Vector2(100, 130), Color.Yellow);
     }
 
     private static string FormatScoreString(string playerName, int score)
@@ -92,7 +88,8 @@ public class ScoreScreenContext(ContentManager content, SpriteFont font, SpriteF
         if (keyBoardState.IsKeyDown(Keys.Enter))
         {
             ScoreScreenManager.AddScore(NewScore, selectedSong);
-            confirmSoundInstance.Play();
+            soundEffects.PlayConfirmSound();
+            scores = ScoreScreenManager.LoadScores()[selectedSong];
             NewScore = null;
             return;
         }
@@ -101,8 +98,7 @@ public class ScoreScreenContext(ContentManager content, SpriteFont font, SpriteF
         {
             lastPressedKey = Keys.Back;
             if (NewScore.PlayerName != "") NewScore.PlayerName = NewScore.PlayerName[..^1];
-            selectSoundInstance.Stop();
-            selectSoundInstance.Play();
+            soundEffects.PlaySelectSound();
             return;
         }
 
@@ -113,8 +109,7 @@ public class ScoreScreenContext(ContentManager content, SpriteFont font, SpriteF
         lastPressedKey = lettersAndNumbers.FirstOrDefault();
         if (lastPressedKey != default)
         {
-            selectSoundInstance.Stop();
-            selectSoundInstance.Play();
+            soundEffects.PlaySelectSound();
         }
         NewScore.PlayerName += KeyUtils.GetCharFromKey(lastPressedKey, shiftDown);
     }

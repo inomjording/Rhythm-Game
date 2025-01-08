@@ -3,11 +3,18 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using RhythmGame.Collections;
 using RhythmGame.MenuContext.Menus;
 
 namespace RhythmGame.MenuContext;
 
-public class MenuContext(ContentManager content, SpriteFont gameFont, SpriteFont smallerFont, ContextManager contextManager, Action exit) : IGameContext
+public class MenuContext(
+    ContentManager content,
+    GraphicsDevice graphicsDevice,
+    SoundEffectCollection soundEffects,
+    FontCollection fonts,
+    ContextManager contextManager,
+    Action exit) : IGameContext
 {
     public event Action<int> OnMenuItemSelected;
     private Menu mainMenu;
@@ -22,7 +29,15 @@ public class MenuContext(ContentManager content, SpriteFont gameFont, SpriteFont
 
     public void LoadContent()
     {
-        factory = new MenuFactory(content, gameFont, smallerFont, new Vector2(100, 100), contextManager, this, exit);
+        factory = new MenuFactory(content,
+            graphicsDevice,
+            soundEffects,
+            fonts,
+            new Vector2(100,
+                100),
+            contextManager,
+            this,
+            exit);
 
         mainMenu = factory.CreateMainMenu();
         songMenu = factory.CreateSongMenu();
