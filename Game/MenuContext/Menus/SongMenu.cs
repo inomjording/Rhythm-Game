@@ -23,9 +23,9 @@ public class SongMenu : Menu
         this.factory = factory;
         this.menuContext = menuContext;
         AddSongMenuItem("Owa Owa");
-        AddSongMenuItem("GET PUMPING!!!");
         AddSongMenuItem("Holy melancholy");
         AddSongMenuItem("7");
+        AddSongMenuItem("GET PUMPING!!!");
         AddMenuItem("Back", () => factory.SwitchCurrentMenu("Main Menu"), Color.Red);
     }
 

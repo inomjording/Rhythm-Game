@@ -135,7 +135,7 @@ public class DanceContext(
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(background, new Rectangle(40, 0, 800, 480), backgroundTint);
+        spriteBatch.Draw(background, new Rectangle(450, 142, 314, 196), backgroundTint);
 
         BeatManager.Draw(spriteBatch, activeBeats);
         
