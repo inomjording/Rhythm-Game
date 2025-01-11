@@ -20,6 +20,7 @@ public class BeatButton
     private Color currentColor;
     protected Keys AssociatedKey;
     protected Rectangle TargetArea;
+    public const int DistanceFromOrigin = 50;
 
     protected BeatButton(Texture2D texture) 
     {

@@ -13,6 +13,7 @@ public class Beat
     private readonly float scale;
     protected float Rotation;
     private readonly Color color;
+    public const int SpawnDistanceFromOrigin = 230;
 
     // Constructor
     protected Beat(Texture2D texture, float speed = 250f, float scale = 1f, Color color = default)

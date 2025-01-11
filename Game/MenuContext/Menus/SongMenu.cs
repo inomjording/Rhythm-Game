@@ -22,6 +22,7 @@ public class SongMenu : Menu
     {
         this.factory = factory;
         this.menuContext = menuContext;
+        AddSongMenuItem("Owa Owa");
         AddSongMenuItem("GET PUMPING!!!");
         AddSongMenuItem("Holy melancholy");
         AddSongMenuItem("7");

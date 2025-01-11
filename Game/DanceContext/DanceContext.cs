@@ -90,7 +90,7 @@ public class DanceContext(
         beatManager = new BeatManager(arrow);
         beatManager.LoadBeatsFromFile("DanceContext/SongTabs/" + selectedSong + ".txt");
         
-        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(463, Origin.Y), beatManager.BeatInterval);
+        dancingCharacter = new DancingCharacter(animationTextures, new Vector2(503, Origin.Y), beatManager.BeatInterval);
     }
 
     public void Update(GameTime gameTime)
@@ -135,7 +135,7 @@ public class DanceContext(
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(background, new Rectangle(0, 0, 800, 480), backgroundTint);
+        spriteBatch.Draw(background, new Rectangle(40, 0, 800, 480), backgroundTint);
 
         BeatManager.Draw(spriteBatch, activeBeats);
         

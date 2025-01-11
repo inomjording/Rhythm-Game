@@ -27,7 +27,7 @@ public class ScoreManager
         font = fonts.GameFont;
         smallerFont = fonts.SmallerFont;
         
-        var scoreTextPosition = new Vector2(420, 120);
+        var scoreTextPosition = new Vector2(460, 120);
         scoreText = new HitText(scoreTextPosition, Score.ToString());
     }
 

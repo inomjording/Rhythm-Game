@@ -13,7 +13,7 @@ public class BeatLeft : Beat
         scale,
         color)
     {
-        Position = new Vector2(DanceContext.Origin.X - 200, DanceContext.Origin.Y);
+        Position = new Vector2(DanceContext.Origin.X - SpawnDistanceFromOrigin, DanceContext.Origin.Y);
         Direction = Vector2.Normalize(DanceContext.Origin - Position);
         Rotation = -MathHelper.PiOver2;
     }

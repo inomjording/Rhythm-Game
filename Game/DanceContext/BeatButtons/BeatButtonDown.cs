@@ -10,7 +10,7 @@ internal class BeatButtonDown : BeatButton
 {
     public BeatButtonDown(Texture2D texture) : base(texture)
     {
-        Position = DanceContext.Origin + new Vector2(0, 50);
+        Position = DanceContext.Origin + new Vector2(0, DistanceFromOrigin);
         Rotation = MathHelper.Pi;
         AssociatedKey = Keys.Down;
         Center = new Vector2(texture.Width / 2f, texture.Height / 2f); // center origin by default

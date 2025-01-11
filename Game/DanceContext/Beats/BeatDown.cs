@@ -13,7 +13,7 @@ public class BeatDown : Beat
         scale,
         color)
     {
-        Position = new Vector2(DanceContext.Origin.X, DanceContext.Origin.Y + 200);
+        Position = new Vector2(DanceContext.Origin.X, DanceContext.Origin.Y + SpawnDistanceFromOrigin);
         Direction = Vector2.Normalize(DanceContext.Origin - Position);
         Rotation = MathHelper.Pi;
     }

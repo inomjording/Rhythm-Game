@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RhythmGame.DanceContext.BeatButtons;
 using RhythmGame.DanceContext.Beats;
 
 namespace RhythmGame.DanceContext;
@@ -24,7 +25,10 @@ public class BeatManager(Texture2D beatTexture)
         var lines = File.ReadAllLines(filePath);
         LoadSpeedAndInterval(lines[0]);
 
-        var currentTime = 0f - 150f/speed; // compensate for time it takes to travel
+        var
+            currentTime =
+                0f - (Beat.SpawnDistanceFromOrigin - BeatButton.DistanceFromOrigin) /
+                speed; // compensate for time it takes to travel
         for (var i = 1; i < lines.Length; i++)
         {
             var line = lines[i];

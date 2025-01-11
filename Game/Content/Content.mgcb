@@ -237,6 +237,12 @@
 /processorParam:Quality=Best
 /build:sound/songs/Holy melancholy.wav
 
+#begin sound/songs/Owa Owa.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/songs/Owa Owa.wav
+
 #begin sound/sound-effects/Confirm effect.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
