@@ -1,0 +1,211 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - main
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft]
+    branches:
+      - main
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/v')
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - name: Get version from tag
+        id: get_version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: RythmGame Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+  build-windows:
+    needs: [create-release]
+    if: |
+      always() && (
+        needs.create-release.result == 'success' ||
+        needs.create-release.result == 'skipped'
+      )
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Publish
+        run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -o publish-windows
+
+      - name: Install WiX Toolset
+        run: |
+          dotnet tool install --global wix
+          dotnet tool install --global dotnet-wix
+
+      - name: Create Windows Installer
+        run: |
+          # Use version from tag if available, otherwise use 0.1.0
+          $version = "${{ needs.create-release.outputs.version }}"
+          if (-not $version) { $version = "0.1.0" }
+
+          echo "<?xml version='1.0' encoding='UTF-8'?>
+          <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+            <Product Id='*' Name='RythmGame' Version='$version' Manufacturer='RythmGame' UpgradeCode='BAD51A35-A8E4-4F6D-8B5C-2C3FD12296F6'>
+              <Package InstallerVersion='200' Compressed='yes' InstallScope='perMachine' />
+              <MajorUpgrade DowngradeErrorMessage='A newer version of RythmGame is already installed.' />
+              <MediaTemplate EmbedCab='yes' />
+              <Directory Id='TARGETDIR' Name='SourceDir'>
+                <Directory Id='ProgramFilesFolder'>
+                  <Directory Id='INSTALLFOLDER' Name='RythmGame'>
+                    <Component Id='MainExecutable' Guid='*'>
+                      <File Id='GameEXE' Name='RythmGame.exe' Source='publish-windows/RythmGame.exe' KeyPath='yes' />
+                    </Component>
+                  </Directory>
+                </Directory>
+              </Directory>
+              <Feature Id='Complete' Level='1'>
+                <ComponentRef Id='MainExecutable' />
+              </Feature>
+            </Product>
+          </Wix>" > installer.wxs
+
+          wix build installer.wxs -o RythmGame-Setup.msi
+
+      - name: Upload Release Asset
+        if: needs.create-release.result == 'success'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./RythmGame-Setup.msi
+          asset_name: RythmGame-Setup.msi
+          asset_content_type: application/x-msi
+
+      - name: Upload Build Artifact
+        if: needs.create-release.result != 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: RythmGame-Setup.msi
+          path: RythmGame-Setup.msi
+          retention-days: 7
+
+  build-macos:
+    needs: [create-release]
+    if: |
+      always() && (
+        needs.create-release.result == 'success' ||
+        needs.create-release.result == 'skipped'
+      )
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Publish
+        run: dotnet publish -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=false -o publish-macos
+
+      - name: Create App Bundle
+        run: |
+          mkdir -p RythmGame.app/Contents/MacOS
+          mkdir -p RythmGame.app/Contents/Resources
+          cp publish-macos/* RythmGame.app/Contents/MacOS/
+
+          # Use version from tag if available, otherwise use 0.1.0
+          VERSION="${{ needs.create-release.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            VERSION="0.1.0"
+          fi
+
+          echo "<?xml version='1.0' encoding='UTF-8'?>
+          <!DOCTYPE plist PUBLIC '-//Apple//DTD PLIST 1.0//EN' 'http://www.apple.com/DTDs/PropertyList-1.0.dtd'>
+          <plist version='1.0'>
+          <dict>
+            <key>CFBundleName</key>
+            <string>RythmGame</string>
+            <key>CFBundleDisplayName</key>
+            <string>RythmGame</string>
+            <key>CFBundleIdentifier</key>
+            <string>com.rythmgame.game</string>
+            <key>CFBundleVersion</key>
+            <string>$VERSION</string>
+            <key>CFBundlePackageType</key>
+            <string>APPL</string>
+            <key>CFBundleExecutable</key>
+            <string>RythmGame</string>
+            <key>LSMinimumSystemVersion</key>
+            <string>10.12</string>
+          </dict>
+          </plist>" > RythmGame.app/Contents/Info.plist
+
+      - name: Create DMG
+        run: |
+          brew install create-dmg
+
+          create-dmg \
+            --volname "RythmGame Installer" \
+            --window-pos 200 120 \
+            --window-size 800 400 \
+            --icon-size 100 \
+            --icon "RythmGame.app" 200 190 \
+            --hide-extension "RythmGame.app" \
+            --app-drop-link 600 185 \
+            "RythmGame.dmg" \
+            "RythmGame.app"
+
+      - name: Upload Release Asset
+        if: needs.create-release.result == 'success'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: ./RythmGame.dmg
+          asset_name: RythmGame.dmg
+          asset_content_type: application/x-apple-diskimage
+
+      - name: Upload Build Artifact
+        if: needs.create-release.result != 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: RythmGame.dmg
+          path: RythmGame.dmg
+          retention-days: 7
