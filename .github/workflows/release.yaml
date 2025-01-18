@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - "v*"
-    branches:
-      - main
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review, converted_to_draft]
     branches:
@@ -73,8 +71,8 @@ jobs:
           if (-not $version) { $version = "0.1.0" }
 
           echo "<?xml version='1.0' encoding='UTF-8'?>
-          <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
-            <Product Id='*' Name='RythmGame' Version='$version' Manufacturer='RythmGame' UpgradeCode='BAD51A35-A8E4-4F6D-8B5C-2C3FD12296F6'>
+          <Wix xmlns='http://wixtoolset.org/schemas/v4/wxs'>
+            <Package Name='RythmGame' Version='$version' Manufacturer='RythmGame' UpgradeCode='BAD51A35-A8E4-4F6D-8B5C-2C3FD12296F6'>
               <Package InstallerVersion='200' Compressed='yes' InstallScope='perMachine' />
               <MajorUpgrade DowngradeErrorMessage='A newer version of RythmGame is already installed.' />
               <MediaTemplate EmbedCab='yes' />
@@ -90,7 +88,7 @@ jobs:
               <Feature Id='Complete' Level='1'>
                 <ComponentRef Id='MainExecutable' />
               </Feature>
-            </Product>
+            </Package>
           </Wix>" > installer.wxs
 
           wix build installer.wxs -o RythmGame-Setup.msi
@@ -134,6 +132,7 @@ jobs:
         run: |
           brew update
           brew install freetype
+          brew install freeimage
 
       - name: Restore dependencies
         run: dotnet restore
