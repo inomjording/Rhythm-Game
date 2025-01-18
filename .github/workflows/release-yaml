@@ -35,7 +35,11 @@ jobs:
 
   build-windows:
     needs: [create-release]
-    if: always()
+    if: |
+      always() && (
+        needs.create-release.result == 'success' ||
+        needs.create-release.result == 'skipped'
+      )
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -112,7 +116,11 @@ jobs:
 
   build-macos:
     needs: [create-release]
-    if: always()
+    if: |
+      always() && (
+        needs.create-release.result == 'success' ||
+        needs.create-release.result == 'skipped'
+      )
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
