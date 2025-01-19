@@ -28,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: RythmGame Release ${{ github.ref }}
+          release_name: RhythmGame Release ${{ github.ref }}
           draft: false
           prerelease: false
 
@@ -73,20 +73,20 @@ jobs:
           echo "<?xml version='1.0' encoding='UTF-8'?>
           <Wix xmlns='http://wixtoolset.org/schemas/v4/wxs'>
             <Package
-              Name='RythmGame'
+              Name='RhythmGame'
               Version='$version'
-              Manufacturer='RythmGame'
+              Manufacturer='RhythmGame'
               UpgradeCode='BAD51A35-A8E4-4F6D-8B5C-2C3FD12296F6'>
 
               <StandardDirectory Id='ProgramFiles64Folder'>
-                <Directory Id='INSTALLFOLDER' Name='RythmGame'>
+                <Directory Id='INSTALLFOLDER' Name='RhythmGame'>
                   <Component Id='MainExecutable'>
-                    <File Id='GameEXE' Source='publish-windows/RythmGame.exe' KeyPath='yes' />
+                    <File Id='GameEXE' Source='publish-windows/RhythmGame.exe' KeyPath='yes' />
                   </Component>
                 </Directory>
               </StandardDirectory>
 
-              <MajorUpgrade DowngradeErrorMessage='A newer version of RythmGame is already installed.' />
+              <MajorUpgrade DowngradeErrorMessage='A newer version of RhythmGame is already installed.' />
 
               <Feature Id='Complete' Level='1'>
                 <ComponentRef Id='MainExecutable' />
@@ -94,7 +94,7 @@ jobs:
             </Package>
           </Wix>" > installer.wxs
 
-          wix build installer.wxs -o RythmGame-Setup.msi
+          wix build installer.wxs -o RhythmGame-Setup.msi
 
       - name: Upload Release Asset
         if: needs.create-release.result == 'success'
@@ -103,16 +103,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./RythmGame-Setup.msi
-          asset_name: RythmGame-Setup.msi
+          asset_path: ./RhythmGame-Setup.msi
+          asset_name: RhythmGame-Setup.msi
           asset_content_type: application/x-msi
 
       - name: Upload Build Artifact
         if: needs.create-release.result != 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: RythmGame-Setup.msi
-          path: RythmGame-Setup.msi
+          name: RhythmGame-Setup.msi
+          path: RhythmGame-Setup.msi
           retention-days: 7
 
   build-macos:
@@ -149,13 +149,13 @@ jobs:
         run: dotnet test --no-restore --verbosity normal
 
       - name: Publish
-        run: dotnet publish -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=false -o publish-macos
+        run: dotnet publish -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=false -o publish-macos
 
       - name: Create App Bundle
         run: |
-          mkdir -p RythmGame.app/Contents/MacOS
-          mkdir -p RythmGame.app/Contents/Resources
-          cp publish-macos/* RythmGame.app/Contents/MacOS/
+          mkdir -p RhythmGame.app/Contents/MacOS
+          mkdir -p RhythmGame.app/Contents/Resources
+          cp publish-macos/* RhythmGame.app/Contents/MacOS/
 
           # Use version from tag if available, otherwise use 0.1.0
           VERSION="${{ needs.create-release.outputs.version }}"
@@ -168,36 +168,36 @@ jobs:
           <plist version='1.0'>
           <dict>
             <key>CFBundleName</key>
-            <string>RythmGame</string>
+            <string>RhythmGame</string>
             <key>CFBundleDisplayName</key>
-            <string>RythmGame</string>
+            <string>RhythmGame</string>
             <key>CFBundleIdentifier</key>
-            <string>com.rythmgame.game</string>
+            <string>com.RhythmGame.game</string>
             <key>CFBundleVersion</key>
             <string>$VERSION</string>
             <key>CFBundlePackageType</key>
             <string>APPL</string>
             <key>CFBundleExecutable</key>
-            <string>RythmGame</string>
+            <string>RhythmGame</string>
             <key>LSMinimumSystemVersion</key>
             <string>10.12</string>
           </dict>
-          </plist>" > RythmGame.app/Contents/Info.plist
+          </plist>" > RhythmGame.app/Contents/Info.plist
 
       - name: Create DMG
         run: |
           brew install create-dmg
 
           create-dmg \
-            --volname "RythmGame Installer" \
+            --volname "RhythmGame Installer" \
             --window-pos 200 120 \
             --window-size 800 400 \
             --icon-size 100 \
-            --icon "RythmGame.app" 200 190 \
-            --hide-extension "RythmGame.app" \
+            --icon "RhythmGame.app" 200 190 \
+            --hide-extension "RhythmGame.app" \
             --app-drop-link 600 185 \
-            "RythmGame.dmg" \
-            "RythmGame.app"
+            "RhythmGame.dmg" \
+            "RhythmGame.app"
 
       - name: Upload Release Asset
         if: needs.create-release.result == 'success'
@@ -206,14 +206,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./RythmGame.dmg
-          asset_name: RythmGame.dmg
+          asset_path: ./RhythmGame.dmg
+          asset_name: RhythmGame.dmg
           asset_content_type: application/x-apple-diskimage
 
       - name: Upload Build Artifact
         if: needs.create-release.result != 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: RythmGame.dmg
-          path: RythmGame.dmg
+          name: RhythmGame.dmg
+          path: RhythmGame.dmg
           retention-days: 7
