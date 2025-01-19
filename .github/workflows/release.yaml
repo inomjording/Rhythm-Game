@@ -58,7 +58,7 @@ jobs:
         run: dotnet test --no-restore --verbosity normal
 
       - name: Publish
-        run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=false -o publish-windows
+        run: dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish-windows
 
       - name: Install WiX Toolset
         run: |
@@ -131,14 +131,6 @@ jobs:
         with:
           dotnet-version: "8.0.x"
 
-      - name: Install FreeType
-        run: |
-          brew update
-          brew install freetype
-          brew install freeimage
-          echo "DYLD_LIBRARY_PATH=$(brew --prefix)/lib:$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
-          echo "DYLD_FALLBACK_LIBRARY_PATH=$(brew --prefix)/lib:$DYLD_FALLBACK_LIBRARY_PATH" >> $GITHUB_ENV
-
       - name: Restore dependencies
         run: dotnet restore
 
@@ -149,7 +141,7 @@ jobs:
         run: dotnet test --no-restore --verbosity normal
 
       - name: Publish
-        run: dotnet publish -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=false -o publish-macos
+        run: dotnet publish -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=true -o publish-macos
 
       - name: Create App Bundle
         run: |
