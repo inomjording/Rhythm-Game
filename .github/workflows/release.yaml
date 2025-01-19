@@ -72,19 +72,22 @@ jobs:
 
           echo "<?xml version='1.0' encoding='UTF-8'?>
           <Wix xmlns='http://wixtoolset.org/schemas/v4/wxs'>
-            <Package Name='RythmGame' Version='$version' Manufacturer='RythmGame' UpgradeCode='BAD51A35-A8E4-4F6D-8B5C-2C3FD12296F6'>
-              <Package InstallerVersion='200' Compressed='yes' InstallScope='perMachine' />
-              <MajorUpgrade DowngradeErrorMessage='A newer version of RythmGame is already installed.' />
-              <MediaTemplate EmbedCab='yes' />
-              <Directory Id='TARGETDIR' Name='SourceDir'>
-                <Directory Id='ProgramFilesFolder'>
-                  <Directory Id='INSTALLFOLDER' Name='RythmGame'>
-                    <Component Id='MainExecutable' Guid='*'>
-                      <File Id='GameEXE' Name='RythmGame.exe' Source='publish-windows/RythmGame.exe' KeyPath='yes' />
-                    </Component>
-                  </Directory>
+            <Package
+              Name='RythmGame'
+              Version='$version'
+              Manufacturer='RythmGame'
+              UpgradeCode='BAD51A35-A8E4-4F6D-8B5C-2C3FD12296F6'>
+
+              <StandardDirectory Id='ProgramFiles64Folder'>
+                <Directory Id='INSTALLFOLDER' Name='RythmGame'>
+                  <Component Id='MainExecutable'>
+                    <File Id='GameEXE' Source='publish-windows/RythmGame.exe' KeyPath='yes' />
+                  </Component>
                 </Directory>
-              </Directory>
+              </StandardDirectory>
+
+              <MajorUpgrade DowngradeErrorMessage='A newer version of RythmGame is already installed.' />
+
               <Feature Id='Complete' Level='1'>
                 <ComponentRef Id='MainExecutable' />
               </Feature>
@@ -133,6 +136,8 @@ jobs:
           brew update
           brew install freetype
           brew install freeimage
+          echo "DYLD_LIBRARY_PATH=$(brew --prefix)/lib:$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "DYLD_FALLBACK_LIBRARY_PATH=$(brew --prefix)/lib:$DYLD_FALLBACK_LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: Restore dependencies
         run: dotnet restore
