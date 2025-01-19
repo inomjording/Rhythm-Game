@@ -131,10 +131,19 @@ jobs:
         with:
           dotnet-version: "9.0.x"
 
-      - name: Install FreeType
+      - name: Install FreeImage
         run: |
           brew update
+          brew install freetype
           brew install freeimage
+          # Create symbolic links to the ARM64 versions of the libraries
+          sudo mkdir -p /usr/local/lib
+          sudo ln -sf $(brew --prefix)/lib/libfreeimage.dylib /usr/local/lib/libFreeImage.dylib
+          sudo ln -sf $(brew --prefix)/lib/libfreetype.dylib /usr/local/lib/libfreetype.dylib
+          # Set both the build-time and runtime library paths
+          echo "DYLD_LIBRARY_PATH=/usr/local/lib:$(brew --prefix)/lib:$DYLD_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "DYLD_FALLBACK_LIBRARY_PATH=/usr/local/lib:$(brew --prefix)/lib:$DYLD_FALLBACK_LIBRARY_PATH" >> $GITHUB_ENV
+          echo "LIBRARY_PATH=/usr/local/lib:$(brew --prefix)/lib:$LIBRARY_PATH" >> $GITHUB_ENV
 
       - name: Restore dependencies
         run: dotnet restore
