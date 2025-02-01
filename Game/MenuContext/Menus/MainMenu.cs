@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using RhythmGame.Collections;
 
@@ -7,7 +8,8 @@ namespace RhythmGame.MenuContext.Menus;
 
 public class MainMenu : Menu
 {
-    public MainMenu(GraphicsDevice graphicsDevice,
+    public MainMenu(ContentManager content,
+        GraphicsDevice graphicsDevice,
         SoundEffectCollection soundEffects,
         FontCollection fonts,
         Vector2 position,
@@ -17,11 +19,18 @@ public class MainMenu : Menu
         fonts,
         position)
     {
-        AddMenuItem("Start Game", () => menuContext.SwitchCurrentMenu("Song Menu"));
+        AddMenuItem("Start Game", () =>
+        {
+            var exploreContext = new ExploreContext.ExploreContext(content);
+            contextManager.SetContext(exploreContext);
+            contextManager.LoadContent();
+        });
+        AddMenuItem("Play Songs", () => menuContext.SwitchCurrentMenu("Song Menu"));
         AddMenuItem("Options", () =>
         {
             var optionsContext = new OptionsContext.OptionsContext(graphicsDevice, fonts, soundEffects);
             contextManager.SetContext(optionsContext);
+            contextManager.LoadContent();
         });
         AddMenuItem("Exit", exit, Color.Red);
     }

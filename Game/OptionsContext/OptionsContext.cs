@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -8,7 +9,7 @@ namespace RhythmGame.OptionsContext;
 
 public class OptionsContext(GraphicsDevice graphicsDevice, FontCollection fonts, SoundEffectCollection soundEffects) : IGameContext
 {
-    private UserSettings userSettings;
+    private UserSettings userSettings = SettingsManager.LoadSettings();
     
     public bool ReturnToMainMenu { get; set; }
     private int selectedIndex;

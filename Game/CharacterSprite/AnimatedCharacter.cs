@@ -5,29 +5,28 @@ using Microsoft.Xna.Framework.Graphics;
 namespace RhythmGame.CharacterSprite;
 
 public class AnimatedCharacter(
-    Dictionary<string, Texture2D> animationTextures,
     float frameInterval,
     Vector2 startPosition,
     float scale = 1f)
 {
-    private readonly Dictionary<string, List<Rectangle>> animations = new();
-    private string currentAnimation = "Idle"; // Default animation
+    private readonly Dictionary<string, SpriteAnimation> animations = new();
+    public string CurrentAnimation { get; private set; } = "Idle";
     private int currentFrame;
     private float frameTimer;
     public float FrameInterval = frameInterval;
 
-    private Vector2 Position { get; } = startPosition;
+    public Vector2 Position { private get; set; } = startPosition;
     private float Scale { get; } = scale;
 
-    public void AddAnimation(string name, List<Rectangle> frames)
+    public void AddAnimation(SpriteAnimation animation)
     {
-        animations[name] = frames;
+        animations[animation.Name] = animation;
     }
 
     public void SetAnimation(string name)
     {
-        if (currentAnimation == name) return;
-        currentAnimation = name;
+        if (CurrentAnimation == name) return;
+        CurrentAnimation = name;
         currentFrame = 0;
         frameTimer = 0f;
     }
@@ -40,8 +39,8 @@ public class AnimatedCharacter(
         frameTimer = 0f;
         currentFrame++;
 
-        if (currentFrame < animations[currentAnimation].Count) return;
-        if (currentAnimation == "Idle")
+        if (currentFrame < animations[CurrentAnimation].Frames.Count) return;
+        if (animations[CurrentAnimation].Loop)
         {
             currentFrame = 0; // Loop the animation
         }
@@ -53,9 +52,9 @@ public class AnimatedCharacter(
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        if (!animations.TryGetValue(currentAnimation, out var value)) return;
-        var sourceRectangle = value[currentFrame];
-        spriteBatch.Draw(animationTextures[currentAnimation],
+        if (!animations.TryGetValue(CurrentAnimation, out var value)) return;
+        var sourceRectangle = value.Frames[currentFrame];
+        spriteBatch.Draw(animations[CurrentAnimation].Texture,
             Position,
             sourceRectangle,
             Color.White,

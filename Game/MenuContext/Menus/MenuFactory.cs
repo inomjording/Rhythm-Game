@@ -20,7 +20,7 @@ public class MenuFactory(ContentManager content, GraphicsDevice graphicsDevice, 
 
     public Menu CreateMainMenu()
     {
-        return new MainMenu(graphicsDevice, soundEffects, fonts, position, exit, contextManager, menuContext);
+        return new MainMenu(content, graphicsDevice, soundEffects, fonts, position, exit, contextManager, menuContext);
     }
 
     public void SwitchCurrentMenu(string menuName)

@@ -25,6 +25,30 @@
 /processorParam:TextureFormat=Color
 /build:bg2.png
 
+#begin bgs/bg-home.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bgs/bg-home.png
+
+#begin bgs/fg-home.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:bgs/fg-home.png
+
 #begin character-sprites/arrows/active-arrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -193,6 +217,30 @@
 /processorParam:TextureFormat=Color
 /build:character-sprites/mc/DanceUpDown.png
 
+#begin character-sprites/mc/idle-char.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:character-sprites/mc/idle-char.png
+
+#begin character-sprites/mc/walk.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:character-sprites/mc/walk.png
+
 #begin font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -212,6 +260,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:sound/songs/7.wav
+
+#begin sound/songs/A Moment of Calmness.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sound/songs/A Moment of Calmness.wav
 
 #begin sound/songs/GET PUMPING!!!.wav
 /importer:WavImporter

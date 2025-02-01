@@ -1,7 +1,5 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace RhythmGame.OptionsContext;
 
@@ -20,8 +18,6 @@ public abstract class SettingsManager
         if (!File.Exists(SettingsFilePath)) return new UserSettings(); // Return default settings if file doesn't exist
         
         var json = File.ReadAllText(SettingsFilePath);
-        
-        Console.WriteLine(json);
 
         return JsonConvert.DeserializeObject<UserSettings>(json);
     }

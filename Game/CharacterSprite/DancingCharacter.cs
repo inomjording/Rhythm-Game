@@ -12,28 +12,15 @@ public class DancingCharacter
 
     public DancingCharacter(Dictionary<string, Texture2D> animationTextures, Vector2 startPosition, float idleFrameInterval = 0.2f, float scale = 1f)
     {
-        animatedCharacter = new AnimatedCharacter(animationTextures, 0.5f, startPosition, scale);
+        animatedCharacter = new AnimatedCharacter(0.5f, startPosition, scale);
         this.idleFrameInterval = idleFrameInterval;
 
         // Add animations for each spritesheet
         foreach (var animation in animationTextures)
         {
-            animatedCharacter.AddAnimation(animation.Key, GenerateFrames(animation.Value));
+            var loop = animation.Key == "Idle";
+            animatedCharacter.AddAnimation(new SpriteAnimation(animation.Key, animation.Value, 74, loop));
         }
-    }
-
-    private static List<Rectangle> GenerateFrames(Texture2D texture)
-    {
-        const int frameWidth = 74;
-        const int frameHeight = 76;
-
-        var frames = new List<Rectangle>();
-        for (var i = 0; i < texture.Width / frameWidth; i++)
-        {
-            frames.Add(new Rectangle(i * frameWidth, 0, frameWidth, frameHeight));
-        }
-
-        return frames;
     }
     
     public void Update(GameTime gameTime, KeyboardState keyboardState)
