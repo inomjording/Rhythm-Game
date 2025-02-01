@@ -34,6 +34,7 @@ public class ExploreContext(ContentManager content) : IGameContext
         
         song = content.Load<SoundEffect>("sound/songs/A Moment of Calmness");
         songInstance = song.CreateInstance();
+        songInstance.IsLooped = true;
         songInstance.Play();
     }
 
