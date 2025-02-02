@@ -9,30 +9,49 @@ namespace RhythmGame.ExploreContext;
 
 public class ExploreContext(ContentManager content) : IGameContext
 {
+    private readonly string backgroundName = "home";
     private Texture2D background;
     private Texture2D foreground;
     private Vector2 backgroundPosition;
 
     private AnimatedCharacter playerCharacter;
-    private Vector2 characterPosition;
+    private Vector2 playerSpritePosition;
 
-    private SoundEffect song;
+    private int playerPosition = 300; // TODO: Add interactive objects relative to player position
+
+    private readonly string songName = "A Moment of Calmness";
     private SoundEffectInstance songInstance;
     
+    private const int MoveSpeed = 4;
+    private const float CharacterXPanLeft = 100f;
+    private const float CharacterXPanRight = 500f;
+    private const float MinXCharacter = -50f;
+    private const float MaxXCharacter = 500f;
+    private readonly float minXBackground = -2375f;
+    private const float MaxXBackground = 0f;
+    
     public bool ReturnToMainMenu { get; set; }
+
+    public ExploreContext(ContentManager content, string backgroundName, float minXBackground, string songName) : this(content)
+    {
+        this.backgroundName = backgroundName;
+        this.minXBackground = minXBackground;
+        this.songName = songName;
+    }
+
     public void LoadContent()
     {
-        background = content.Load<Texture2D>("bgs/bg-home");
-        foreground = content.Load<Texture2D>("bgs/fg-home");
+        background = content.Load<Texture2D>("bgs/bg-" + backgroundName);
+        foreground = content.Load<Texture2D>("bgs/fg-" + backgroundName);
         backgroundPosition = Vector2.Zero;
 
-        characterPosition = new Vector2(300f, 260f);
-        playerCharacter = new AnimatedCharacter(0.1f, characterPosition);
+        playerSpritePosition = new Vector2(300f, 260f);
+        playerCharacter = new AnimatedCharacter(0.1f, playerSpritePosition);
         playerCharacter.AddAnimation(new SpriteAnimation("Idle", content.Load<Texture2D>("character-sprites/mc/idle-char")));
         playerCharacter.AddAnimation(new SpriteAnimation("Walk", content.Load<Texture2D>("character-sprites/mc/walk")));
         playerCharacter.SetAnimation("Idle");
         
-        song = content.Load<SoundEffect>("sound/songs/A Moment of Calmness");
+        var song = content.Load<SoundEffect>("sound/songs/" + songName);
         songInstance = song.CreateInstance();
         songInstance.IsLooped = true;
         songInstance.Play();
@@ -40,66 +59,78 @@ public class ExploreContext(ContentManager content) : IGameContext
 
     public void Update(GameTime gameTime)
     {
+        HandleMovement();
+        playerCharacter.Update(gameTime);
+    }
+
+    private void HandleMovement()
+    {
         var keyboardState = Keyboard.GetState();
+        var isMoving = false;
 
         if (keyboardState.IsKeyDown(Keys.Left))
         {
-            if (characterPosition.X > 300f)
-            {
-                characterPosition.X -= 4;
-                playerCharacter.Position = characterPosition;
-            }
-            else if (backgroundPosition.X <= 0)
-            {
-                backgroundPosition.X += 4;
-            } 
-            else if (characterPosition.X >= -50f)
-            {
-                characterPosition.X -= 4;
-                playerCharacter.Position = characterPosition;
-            }
-            if (playerCharacter.CurrentAnimation != "Walk")
-            {
-                playerCharacter.SetAnimation("Walk");
-            }
+            MoveLeft();
+            isMoving = true;
         }
         else if (keyboardState.IsKeyDown(Keys.Right))
         {
-            if (characterPosition.X < 300f)
-            {
-                characterPosition.X += 4;
-                playerCharacter.Position = characterPosition;
-            }
-            else if (backgroundPosition.X >= -2412f)
-            {
-                backgroundPosition.X -= 4;
-            } 
-            else if (characterPosition.X <= 458)
-            {
-                characterPosition.X += 4;
-                playerCharacter.Position = characterPosition;
-            }
-            if (playerCharacter.CurrentAnimation != "Walk")
-            {
-                playerCharacter.SetAnimation("Walk");
-            }
+            MoveRight();
+            isMoving = true;
         }
-        else
+
+        // Set animation only if it changes
+        var targetAnimation = isMoving ? "Walk" : "Idle";
+        if (playerCharacter.CurrentAnimation != targetAnimation)
         {
-            if (playerCharacter.CurrentAnimation != "Idle")
-            {
-                playerCharacter.SetAnimation("Idle");
-            }
+            playerCharacter.SetAnimation(targetAnimation);
         }
-        playerCharacter.Update(gameTime);
+    }
+
+    private void MoveLeft()
+    {
+        if (playerSpritePosition.X > CharacterXPanLeft)
+        {
+            playerSpritePosition.X -= MoveSpeed;
+            playerPosition -= MoveSpeed;
+        }
+        else if (backgroundPosition.X < MaxXBackground)
+        {
+            backgroundPosition.X += MoveSpeed;
+            playerPosition -= MoveSpeed;
+        }
+        else if (playerSpritePosition.X >= MinXCharacter)
+        {
+            playerSpritePosition.X -= MoveSpeed;
+            playerPosition -= MoveSpeed;
+        }
+        playerCharacter.Position = playerSpritePosition;
+    }
+
+    private void MoveRight()
+    {
+        if (playerSpritePosition.X < CharacterXPanRight)
+        {
+            playerSpritePosition.X += MoveSpeed;
+            playerPosition += MoveSpeed;
+        }
+        else if (backgroundPosition.X > minXBackground)
+        {
+            backgroundPosition.X -= MoveSpeed;
+            playerPosition += MoveSpeed;
+        }
+        else if (playerSpritePosition.X <= MaxXCharacter)
+        {
+            playerSpritePosition.X += MoveSpeed;
+            playerPosition += MoveSpeed;
+        }
+        playerCharacter.Position = playerSpritePosition;
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(background, backgroundPosition, Color.White);
-        
         playerCharacter.Draw(spriteBatch);
-        
         spriteBatch.Draw(foreground, backgroundPosition, Color.White);
     }
 }
