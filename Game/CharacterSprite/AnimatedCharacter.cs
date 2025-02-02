@@ -52,8 +52,8 @@ public class AnimatedCharacter(
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        if (!animations.TryGetValue(CurrentAnimation, out var value)) return;
-        var sourceRectangle = value.Frames[currentFrame];
+        if (!animations.TryGetValue(CurrentAnimation, out var spriteAnimation)) return;
+        var sourceRectangle = spriteAnimation.Frames[currentFrame];
         spriteBatch.Draw(animations[CurrentAnimation].Texture,
             Position,
             sourceRectangle,
@@ -61,7 +61,7 @@ public class AnimatedCharacter(
             0f,
             Vector2.Zero,
             Scale,
-            SpriteEffects.None,
+            spriteAnimation.SpriteEffects,
             0f);
     }
 }

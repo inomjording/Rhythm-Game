@@ -47,8 +47,10 @@ public class ExploreContext(ContentManager content) : IGameContext
 
         playerSpritePosition = new Vector2(300f, 260f);
         playerCharacter = new AnimatedCharacter(0.1f, playerSpritePosition);
-        playerCharacter.AddAnimation(new SpriteAnimation("Idle", content.Load<Texture2D>("character-sprites/mc/idle-char")));
-        playerCharacter.AddAnimation(new SpriteAnimation("Walk", content.Load<Texture2D>("character-sprites/mc/walk")));
+        playerCharacter.AddAnimation(new SpriteAnimation("IdleLeft", content.Load<Texture2D>("character-sprites/mc/idle-char"), spriteEffects: SpriteEffects.FlipHorizontally));
+        playerCharacter.AddAnimation(new SpriteAnimation("IdleRight", content.Load<Texture2D>("character-sprites/mc/idle-char")));
+        playerCharacter.AddAnimation(new SpriteAnimation("WalkLeft", content.Load<Texture2D>("character-sprites/mc/walk"), spriteEffects: SpriteEffects.FlipHorizontally));
+        playerCharacter.AddAnimation(new SpriteAnimation("WalkRight", content.Load<Texture2D>("character-sprites/mc/walk")));
         playerCharacter.SetAnimation("Idle");
         
         var song = content.Load<SoundEffect>("sound/songs/" + songName);
@@ -66,24 +68,26 @@ public class ExploreContext(ContentManager content) : IGameContext
     private void HandleMovement()
     {
         var keyboardState = Keyboard.GetState();
-        var isMoving = false;
+        var animation = "IdleRight";
 
         if (keyboardState.IsKeyDown(Keys.Left))
         {
             MoveLeft();
-            isMoving = true;
+            animation = "WalkLeft";
         }
         else if (keyboardState.IsKeyDown(Keys.Right))
         {
             MoveRight();
-            isMoving = true;
+            animation = "WalkRight";
+        }
+        else if (playerCharacter.CurrentAnimation is "WalkLeft" or "IdleLeft")
+        {
+            animation = "IdleLeft";
         }
 
-        // Set animation only if it changes
-        var targetAnimation = isMoving ? "Walk" : "Idle";
-        if (playerCharacter.CurrentAnimation != targetAnimation)
+        if (playerCharacter.CurrentAnimation != animation)
         {
-            playerCharacter.SetAnimation(targetAnimation);
+            playerCharacter.SetAnimation(animation);
         }
     }
 
