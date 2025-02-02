@@ -21,7 +21,7 @@ public class MainMenu : Menu
     {
         AddMenuItem("Start Game", () =>
         {
-            var exploreContext = new ExploreContext.ExploreContext(content);
+            var exploreContext = new ExploreContext.ExploreContext(content, fonts);
             contextManager.SetContext(exploreContext);
             contextManager.LoadContent();
         });
