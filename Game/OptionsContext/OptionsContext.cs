@@ -71,6 +71,7 @@ public class OptionsContext(GraphicsDevice graphicsDevice, FontCollection fonts,
                 {
                     ReturnToMainMenu = true;
                     soundEffects.PlayConfirmSound();
+                    userSettings.MasterVolume = masterVolume;
                     SettingsManager.SaveSettings(userSettings);
                 }
                 break;
