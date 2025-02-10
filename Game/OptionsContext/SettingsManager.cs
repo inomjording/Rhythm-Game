@@ -1,24 +1,33 @@
-﻿using System.IO;
-using Newtonsoft.Json;
+﻿using System;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RhythmGame.OptionsContext;
 
-public abstract class SettingsManager
+public static class SettingsManager
 {
-    private const string SettingsFilePath = "UserData/user-settings.json";
+    private static readonly string SettingsFilePath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+        "RhythmGame",
+        "user-settings.json"
+    );
+
+    private static readonly JsonSerializerOptions SerializerOptions = new()
+    {
+        WriteIndented = true,
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
+    };
 
     public static void SaveSettings(UserSettings settings)
     {
-        var json = JsonConvert.SerializeObject(settings, Formatting.Indented);
-        File.WriteAllText(SettingsFilePath, json);
+        Directory.CreateDirectory(Path.GetDirectoryName(SettingsFilePath)!);
+        File.WriteAllText(SettingsFilePath, JsonSerializer.Serialize(settings, SerializerOptions));
     }
 
-    public static UserSettings LoadSettings()
-    {
-        if (!File.Exists(SettingsFilePath)) return new UserSettings(); // Return default settings if file doesn't exist
-        
-        var json = File.ReadAllText(SettingsFilePath);
-
-        return JsonConvert.DeserializeObject<UserSettings>(json);
-    }
+    public static UserSettings LoadSettings() =>
+        File.Exists(SettingsFilePath)
+            ? JsonSerializer.Deserialize<UserSettings>(File.ReadAllText(SettingsFilePath), SerializerOptions)
+            : new();
 }
